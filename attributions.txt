@@ -1,0 +1,11 @@
+cover image on home page: 
+
+Photo by <a href="https://unsplash.com/@pablomerchanm?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Pablo Merchán Montes</a> on <a href="https://unsplash.com/photos/assorted-dish-on-white-ceramic-plates-GFW3dJRiMsQ?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Unsplash</a>
+      
+
+about section:
+
+image 1: 
+
+Photo by <a href="https://unsplash.com/@evysem?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Evelyn Semenyuk</a> on <a href="https://unsplash.com/photos/sliced-lemon-on-white-ceramic-plate-IfG34eJKhsE?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Unsplash</a>
+      

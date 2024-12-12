@@ -1,0 +1,48 @@
+.rounded {
+    border-radius: 25px;
+}
+.rounded-top {
+    border-top-left-radius: 25px;
+    border-top-right-radius: 25px;
+}
+.rounded-left {
+    border-top-left-radius: 25px;
+    border-bottom-left-radius: 25px;
+}
+.rounded-right {
+    border-top-right-radius: 25px;
+    border-bottom-right-radius: 25px;
+}
+
+
+.row {
+    display: flex;
+    align-items: flex-start;
+    font-weight: 500;
+}
+
+.full-height {
+    height: 100%;
+}
+
+.about-1 {
+    background-image: url("images/evelyn-semenyuk-IfG34eJKhsE-unsplash.jpg");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    height: 200px;
+    overflow: hidden; 
+}
+
+.about-2 {
+    background-image: url("images/eaters-collective-12eHC6FxPyg-unsplash.jpg");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    height: 200px;
+    overflow: hidden; 
+}
+
+.opacity-50{
+    background-color: rgba(250, 250, 250, 0.5);
+}
