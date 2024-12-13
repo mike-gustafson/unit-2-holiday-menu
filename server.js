@@ -9,11 +9,12 @@ const bodyParser = require('body-parser');
 const flash = require('connect-flash');
 
 const User = require('./models/user');
-const userRoutes = require('./routes/userRoutes');
+const authRoutes = require('./routes/auth');
 const itemRoutes = require('./routes/itemRoutes');
 
 const app = express();
 
+app.use(express.urlencoded({ extended: true }));
 // Database connection
 mongoose.connect(process.env.MONGO_URI, {  })
   .then(() => console.log('Database connected'))
@@ -30,18 +31,20 @@ app.use((req, res, next) => {
   next();
 });
 
-passport.use(new LocalStrategy(User.authenticate()));
+passport.use(new LocalStrategy(
+  { usernameField: 'email', passwordField: 'password' },
+  User.authenticate()
+));
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
 // Middleware
-app.use(bodyParser.urlencoded({ extended: true }));
 app.use(methodOverride('_method'));
 app.use(express.static('public'));
 app.set('view engine', 'ejs');
 
 // Routes
-app.use(userRoutes);
+app.use(authRoutes);
 app.use('/items', itemRoutes);
 
 app.get('/', (req, res) => {
