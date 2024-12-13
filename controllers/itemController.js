@@ -5,7 +5,7 @@ exports.getItems = async (req, res) => {
     return res.redirect('/login');
   }
   const items = await Item.find({ user: req.user._id });
-  res.render('items/index', { items });
+  res.render('items/index', { items, user: req.user });
 };
 
 exports.newItemForm = (req, res) => {

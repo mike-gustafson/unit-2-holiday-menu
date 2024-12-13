@@ -4,8 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <link href="/styles.css" rel="stylesheet">
-    <link href="/tailwind.css" rel="stylesheet">
+    <%- include('../partials/header') %>
 </head>
 <body class="flex items-center justify-center h-screen bg-gray-100">
 
@@ -22,16 +21,34 @@
   
       <form action="/register" method="POST" class="space-y-4">
         <div>
-          <label for="username" class="block text-sm font-medium text-gray-700">Username</label>
+          <label for="email" class="block text-sm font-medium text-gray-700">E-Mail</label>
           <input
             type="text"
-            name="username"
-            id="username"
+            name="email"
+            id="email"
             required
             class="mt-1 w-full p-2 border border-gray-300 rounded-lg shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
           />
         </div>
-  
+        <div>
+          <label for="firstName" class="block text-sm font-medium text-gray-700">First Name</label>
+          <input
+            type="text"
+            name="firstName"
+            id="firstName"
+            required
+            class="mt-1 w-full p-2 border border-gray-300 rounded-lg shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
+          />
+        </div>
+        <div>
+          <label for="lastName" class="block text-sm font-medium text-gray-700">Last Name</label>
+          <input
+            type="text"
+            name="lastName"
+            id="lastName"
+            required
+            class="mt-1 w-full p-2 border border-gray-300 rounded-lg shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
+          />
         <div>
           <label for="password" class="block text-sm font-medium text-gray-700">Password</label>
           <input

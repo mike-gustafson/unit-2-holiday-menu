@@ -6,13 +6,12 @@ exports.registerForm = (req, res) => {
 };
 
 exports.register = async (req, res) => {
-  const { username, password, firstname, lastname, email, dietaryAccommodations } = req.body;
+  const { password, firstName, lastName, email, dietaryAccommodations } = req.body;
 
   try {
-    const user = new User({ 
-      username, 
-      firstname, 
-      lastname, 
+    const user = new User({  
+      firstName, 
+      lastName, 
       email, 
       dietaryAccommodations 
     });
@@ -39,5 +38,5 @@ exports.login = passport.authenticate('local', {
 });
 
 exports.logout = (req, res) => {
-  req.logout(() => res.redirect('/login'));
+  req.logout(() => res.redirect('/'));
 };
