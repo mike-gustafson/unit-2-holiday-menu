@@ -25,12 +25,16 @@ exports.deleteAccountConfirm = async (req, res) => {
 
 // router.delete('/:id', ensureAuthenticated, accountController.deleteAccount);
 exports.deleteAccount = async (req, res) => {
+  req.body.email = req.body.email.toLowerCase();
   if ((req.user.id === req.params.id) && req.user.email === req.body.email) {
-    console.log('information correct')
     try {
-      const user = await User.findByIdAndDelete(req.params.id);
-      user.remove();
-      req.logout();
+      await User.findByIdAndDelete(req.params.id);
+      req.logout((err) => {
+        if (err) {
+          console.error('Error during logout:', err);
+          return res.status(500).send('Error during logout.');
+        }
+      })
       res.redirect('/');
     } catch (err) {
       res.status(500).send('Error deleting account.');

@@ -58,10 +58,19 @@
     height: 200px;
     overflow: hidden; 
 }
-.opacity-50{
+.registration {
+    background-image: url("images/jenn-kosar-67-1iw9rhzE-unsplash.jpg");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    overflow: hidden; 
+}
+.opacity-50 {
     background-color: rgba(250, 250, 250, 0.5);
 }
-
+.opacity-50-dark {
+    background-color: rgba(250, 250, 250, 0.8);
+}
 .bg-woodgrain {
     background-image: url("images/annie-spratt-L6GydBHMVGQ-unsplash.jpg");
     background-size: cover;

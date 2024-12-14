@@ -15,6 +15,7 @@ exports.register = async (req, res) => {
       email, 
       dietaryAccommodations 
     });
+    user.email = email.toLowerCase();
 
     await User.register(user, password);
 
@@ -28,10 +29,11 @@ exports.register = async (req, res) => {
 };
 
 exports.loginForm = (req, res) => {
-  res.render('users/login');
+  res.redirect('/');
 };
 
-exports.login =  (req, res, next) => {
+exports.login =  (req, res, next) => { 
+  req.body.email = req.body.email.toLowerCase();
   passport.authenticate('local', (err, user, info) => {
     if (err) {
       console.error('Error during authentication:', err);
