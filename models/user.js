@@ -6,12 +6,13 @@ const userSchema = new mongoose.Schema({
   firstName: { type: String },
   lastName: { type: String },
   dietaryAccommodations: [String],
+  connections: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
+  events: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Event' }],
+
 });
 
-// Add passport-local-mongoose plugin for password management
 userSchema.plugin(passportLocalMongoose, {
   usernameField: 'email',
 });
- 
 
 module.exports = mongoose.model('User', userSchema);

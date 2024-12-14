@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Confirm account deletion</title>
+    <%- include('../partials/header.ejs') %>
+</head>
+
+<body>
+    <%- include('../partials/navBar') %>
+        <div class="container mx-auto">
+            <div class="card blue-grey darken-1">
+                <div class="card-content white-text red lighten-1">
+                    <span class="card-title"><strong>Are you sure you want to delete your account?</strong></span>
+                    <p>This action is irreversable and all information will be permenently lost.</p>
+                    <form action="/account/<%=user._id%>?_method=DELETE" method="POST">
+                        <div class="row">
+                        <input class="input-field col s4" type="email" name="email" placeholder="Confirm your E-Mail address" required>
+                        <span class="col s8"></span>
+                    </div>
+                        <a href="/account/profile" class="btn-small waves-effect waves-light green"><strong>No, go
+                            back</strong></a>
+                        <button class="btn-small waves-effect waves-light red darken-3" type="submit" name="action"><strong>Yes,
+                            delete my account</strong></button>
+                    </form>
+                </div>
+            </div>
+        </div>
+</body>
+
+</html>

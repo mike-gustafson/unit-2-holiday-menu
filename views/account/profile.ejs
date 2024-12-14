@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Profile</title>
+  <%- include('../partials/header.ejs') %>
+</head>
+
+<body>
+  <%- include('../partials/navBar') %>
+<div class="container mx-auto">
+        <div class="card blue-grey darken-1">
+          <div class="card-content white-text">
+            <span class="card-title"><strong><%= user.firstName %> <%= user.lastName %></strong></span>
+            <p>
+              <strong>Email:</strong> <%= user.email %><br>
+              <% if (user.connections.lenght >= 1) { %>
+                <strong>Connections:</strong>
+                <ul>
+                  <% user.connections.forEach(function(connection) { %>
+                    <li><%= connection.firstName %> <%= connection.lastName %>
+                    <button class="btn waves-effect waves-light light-blue darken-2
+                    " type="submit" name="action">Remove Connection
+                      <i class="material-icons right">remove</i>
+                  </li>
+                  <% }) %>
+                </ul> 
+              <% } %>
+              
+                <button class="btn-small waves-effect waves-light light-blue darken-2
+                " type="submit" name="action">Add Connection
+                  <i class="material-icons right">add</i>
+                </button>
+            </p>
+          </div>
+          <div class="card-action">
+            <button class="btn-small waves-effect waves-light light-blue darken-2
+            " type="submit" name="action">Edit Profile
+              <i class="material-icons right">edit</i>
+            </button>
+            <form action="/account/profile/deleteConfirm">
+            <button class="btn-small waves-effect waves-light red darken-3" type="submit" name="action">Delete Profile
+              <i class="material-icons right">delete</i>
+            </button>
+          </form>
+          </div>
+        </div>
+  </div>
+</body>

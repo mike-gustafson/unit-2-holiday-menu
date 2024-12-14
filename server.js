@@ -5,12 +5,13 @@ const passport = require('passport');
 const LocalStrategy = require('passport-local');
 const session = require('express-session');
 const methodOverride = require('method-override');
-const bodyParser = require('body-parser');
 const flash = require('connect-flash');
 
 const User = require('./models/user');
 const authRoutes = require('./routes/auth');
 const itemRoutes = require('./routes/itemRoutes');
+const eventRoutes = require('./routes/eventRoutes');
+const accountRoutes = require('./routes/accountRoutes');
 
 const app = express();
 
@@ -46,6 +47,8 @@ app.set('view engine', 'ejs');
 // Routes
 app.use(authRoutes);
 app.use('/items', itemRoutes);
+app.use('/events', eventRoutes);
+app.use('/account', accountRoutes);
 
 app.get('/', (req, res) => {
     res.render('home/');

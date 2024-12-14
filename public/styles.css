@@ -61,3 +61,10 @@
 .opacity-50{
     background-color: rgba(250, 250, 250, 0.5);
 }
+
+.bg-woodgrain {
+    background-image: url("images/annie-spratt-L6GydBHMVGQ-unsplash.jpg");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}

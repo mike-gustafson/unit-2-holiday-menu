@@ -2,7 +2,7 @@ const User = require('../models/user');
 const passport = require('passport');
 
 exports.registerForm = (req, res) => {
-  res.render('users/register');
+  res.render('account/register');
 };
 
 exports.register = async (req, res) => {
