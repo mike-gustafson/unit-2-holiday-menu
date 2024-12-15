@@ -28,8 +28,5 @@
     "passport-local": "^1.0.0",
     "passport-local-mongoose": "^8.0.0",
     "postcss": "^8.4.49"
-  },
-  "devDependencies": {
-    "tailwindcss": "^3.4.16"
   }
 }
