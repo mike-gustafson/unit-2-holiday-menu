@@ -12,7 +12,7 @@ const authRoutes = require('./routes/auth');
 const itemRoutes = require('./routes/itemRoutes');
 const eventRoutes = require('./routes/eventRoutes');
 const accountRoutes = require('./routes/accountRoutes');
-const forgotPasswordRoutes = require('./routes/forgotPasswordRoutes');
+const passwordRoutes = require('./routes/passwordRoutes');
 
 const app = express();
 
@@ -50,7 +50,7 @@ app.use(authRoutes);
 app.use('/items', itemRoutes);
 app.use('/events', eventRoutes);
 app.use('/account', accountRoutes);
-app.use('/forgot-password', forgotPasswordRoutes);
+app.use('/password', passwordRoutes);
 
 app.get('/', (req, res) => {
     res.render('home/');

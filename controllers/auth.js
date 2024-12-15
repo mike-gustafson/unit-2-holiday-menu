@@ -22,7 +22,6 @@ exports.register = async (req, res) => {
     req.flash('success', 'Registration successful! Please log in.');
     res.redirect('/login');
   } catch (err) {
-    console.error('Registration error:', err);
     req.flash('error', 'An error occurred during registration.');
     res.redirect('/register');
   }
@@ -40,13 +39,11 @@ exports.login =  (req, res, next) => {
       return next(err);
     }
     if (!user) {
-      console.error('Authentication failed:', info);
       req.flash('error', info.message || 'Invalid credentials.');
       return res.redirect('/');
     }
     req.logIn(user, (err) => {
       if (err) {
-        console.error('Error during login:', err);
         return next(err);
       }
       res.redirect('/items');
