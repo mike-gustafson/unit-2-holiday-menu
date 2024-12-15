@@ -9,6 +9,10 @@ exports.accountProfile = async (req, res) => {
   res.render('account/profile', { user: req.user });
 };
 
+exports.accountConnections = async (req, res) => {
+  res.render('account/connections', { user: req.user });
+};
+
 // router.get('/new', ensureAuthenticated, accountController.newAccountForm);
 exports.newAccountForm = async (req, res) => {
   res.render('account/register');

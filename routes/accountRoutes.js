@@ -6,6 +6,7 @@ const { ensureAuthenticated } = require('../middleware/auth');
 router.get('/', accountController.accountHome);
 router.get('/new', ensureAuthenticated, accountController.newAccountForm);
 router.get('/profile', ensureAuthenticated, accountController.accountProfile);
+router.get('/connections', ensureAuthenticated, accountController.accountConnections);
 router.get('/edit', ensureAuthenticated, accountController.editAccountForm);
 router.get('/profile/deleteConfirm', ensureAuthenticated, accountController.deleteAccountConfirm);
 router.delete('/:id', ensureAuthenticated, accountController.deleteAccount);
