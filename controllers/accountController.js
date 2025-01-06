@@ -1,33 +1,38 @@
 const User = require('../models/user');
 
-// router.get('/', accountController.accountHome);
 exports.accountHome = async (req, res) => {
-  res.render('account/index', { user: req.user });
+  try {
+    const userId = req.user._id;
+    const user = await User.findById(userId)
+    .populate('dishes');
+    res.render('account/index', { user });
+  }
+  catch (err) {
+    console.error('Error getting user:', err);
+    return res.status(500).send('Error getting user.');
+  }
 };
 
-exports.accountProfile = async (req, res) => {
+exports.accountProfile = (req, res) => {
   res.render('account/profile', { user: req.user });
 };
 
-exports.accountConnections = async (req, res) => {
+exports.accountConnections = (req, res) => {
   res.render('account/connections', { user: req.user });
 };
 
-// router.get('/new', ensureAuthenticated, accountController.newAccountForm);
-exports.newAccountForm = async (req, res) => {
+exports.newAccountForm = (req, res) => {
   res.render('account/register');
 };
 
-// router.get('/:id/edit', ensureAuthenticated, accountController.editAccountForm);
-exports.editAccountForm = async (req, res) => {
+exports.editAccountForm = (req, res) => {
   res.render('account/edit', { user: req.user });
 };
 
-exports.deleteAccountConfirm = async (req, res) => {
+exports.deleteAccountConfirm = (req, res) => {
   res.render('account/deleteConfirm', { user: req.user });
 };
 
-// router.delete('/:id', ensureAuthenticated, accountController.deleteAccount);
 exports.deleteAccount = async (req, res) => {
   req.body.email = req.body.email.toLowerCase();
   if ((req.user.id === req.params.id) && req.user.email === req.body.email) {

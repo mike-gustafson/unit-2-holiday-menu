@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>
+        <%= dish.name %>
+    </title>
+    <%- include('../partials/header.ejs') %>
+</head>
+
+<body>
+    <%- include('../partials/navBar') %>
+
+        <div class="container">
+            <div class="card rounded z-depth-2">
+                <h1>
+                    <%= dish.name %>
+                </h1>
+                <p>
+                    <%= dish.description %>
+                </p>
+                <p>Servings: <%= dish.servings %>
+                </p>
+                <p>Dietary Accommodations: <%= dish.dietaryAccommodations %>
+                </p>
+                <p>Category: <%= dish.category %>
+                </p>
+                <% if (user.id == dish.user) { %>
+                    <a href="/dishes/<%= dish.id %>/edit" class="waves-effect waves-light btn">Edit</a>
+                <% } %>
+                <a href="/account" class="waves-effect waves-light btn">Back to Dashboard</a>
+            </div>
+        </div>
+</body>

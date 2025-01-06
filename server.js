@@ -13,6 +13,7 @@ const itemRoutes = require('./routes/itemRoutes');
 const eventRoutes = require('./routes/eventRoutes');
 const accountRoutes = require('./routes/accountRoutes');
 const passwordRoutes = require('./routes/passwordRoutes');
+const dishRoutes = require('./routes/dishRoutes');
 
 const app = express();
 
@@ -32,6 +33,10 @@ app.use((req, res, next) => {
   res.locals.error = req.flash('error') || [];
   next();
 });
+app.use((req, res, next) => {
+  res.locals.user = req.user || null;
+  next();
+});
 
 passport.use(new LocalStrategy(
   { usernameField: 'email', passwordField: 'password' },
@@ -48,6 +53,7 @@ app.set('view engine', 'ejs');
 // Routes
 app.use(authRoutes);
 app.use('/items', itemRoutes);
+app.use('/dishes', dishRoutes);
 app.use('/events', eventRoutes);
 app.use('/account', accountRoutes);
 app.use('/password', passwordRoutes);
@@ -55,7 +61,6 @@ app.use('/password', passwordRoutes);
 app.get('/', (req, res) => {
     res.render('home/');
   });
-  
 
 // Start server
 app.listen(3003, () => {

@@ -4,24 +4,94 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Main</title>
+  <title>Dashboard</title>
   <%- include('../partials/header.ejs') %>
 </head>
 
 <body>
   <%- include('../partials/navBar') %>
 
-    <h1>This is the landing page for a user.</h1>
-    <p>Here are the actions they should be able to do:</p>
-    <ul>
-      <li>see list of events past and present</li>
-      <li>create a new event</li>
-      <li>view an event</li>
-      <li>edit an event</li>
-      <li>delete an event</li>
-      <li>sign up for an event</li>
-      <li>sign up to bring a dish to an event</li>
-      <li>view the dishes they are bringing to an event</li>
-      <li> view dishes they've brought in the past</li>
-    </ul>
+    <div class="container">
+      <div class="card row z-depth-2">
+        <div class="col s3">
+          <h3>Calendar</h3>
+          <hr>
+          <% if (user.eventsHosting.length > 0) { %>
+          <h4>hosting</h4>
+          <ul>
+            <% user.eventsHosting.forEach(function(event) { %>
+            <li>
+              <a href="/events/<%= event._id %>">
+                <%= event.name %>
+              </a>
+            </li>
+            <% }) %>
+            </ul>
+          <% } else { %>
+            <p>No upcoming hosted events.</p>
+          <% } %>
+          <hr>
+          <% if (user.eventsAttending.length > 0) { %>
+          <h4>attending</h4>
+          <ul>
+            <% user.eventsAttending.forEach(function(event) { %>
+            <li>
+              <a href="/events/<%= event._id %>">
+                <%= event.name %>
+              </a>
+            </li>
+            <% }) %>
+            </ul>
+          <% } else { %>
+            <p>Not attending any upcoming events.</p>
+          <% } %>
+          <hr>
+          <a href="events/new" class="waves-effect waves-light btn">Create Event</a>
+        </div>
+        <div class="col s6">
+          <div class="card rounded-top-left z-depth-2">
+            <h1>Dashboard</h1>
+            <p>Welcome, <%= user.firstName %>!</p>
+            <p>You have <strong>hosted</strong> <%= user.eventsHosting.length %> events so far</p>
+            <p>You have <strong>attended</strong> <%= user.eventsAttending.length %> events so far</p>
+            <p>You have <strong>connections</strong> with <%= user.connections.length %> people</p>
+          </div>
+        </div>
+        <div class="col s3">
+          <h3>Dishes</h3>
+          <hr>
+          <% if (user.dishes.length > 0) { %>
+          <ul>
+            <% user.dishes.forEach(function(dish) { %>
+            <li>
+              <a href="/dishes/<%= dish._id %>">
+                <%= dish.name %>
+              </a>
+            </li>
+            <% }) %>
+            </ul>
+          <% } else { %>
+            <p>You haven't added any dishes yet.</p>
+          <% } %>
+          <a href="/dishes/new" class="waves-effect waves-light btn">Add Dish</a>
+          <hr>
+          <% if (user.favoriteDishes.length > 0) { %>
+          <h4>Favorite Dishes:</h4>
+          <ul>
+            <% user.favoriteDishes.forEach(function(dish) { %>
+            <li>
+              <a href="/dishes/<%= dish._id %>">
+                <%= dish.name %>
+              </a>
+            </li>
+            <% }) %>
+            </ul>
+          <% } else { %>
+            <p>No Favorite Dishes Yet</p>
+          <% } %>          
+          <a href="/dishes/" class="waves-effect waves-light btn">Browse Dishes</a>
+          
+          <hr>
+        </div>
+      </div>
 </body>

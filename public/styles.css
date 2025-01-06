@@ -85,3 +85,7 @@
     background-position: center;
     background-repeat: no-repeat;
 }
+
+.error404 {
+    padding: 20px;
+}

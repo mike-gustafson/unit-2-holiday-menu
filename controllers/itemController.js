@@ -1,11 +1,15 @@
 const Item = require('../models/item');
 
 exports.getItems = async (req, res) => {
-  if (!req.isAuthenticated()) {
-    return res.redirect('/login');
+  try {
+    if (!req.isAuthenticated()) {
+      return res.redirect('/login');
+    }
+    const items = await Item.find({ user: req.user._id });
+    res.render('items/index', { items, user: req.user });
+  } catch (err) {
+    res.status(500).send('Error getting items.');
   }
-  const items = await Item.find({ user: req.user._id });
-  res.render('items/index', { items, user: req.user });
 };
 
 exports.newItemForm = (req, res) => {

@@ -46,7 +46,7 @@ exports.login =  (req, res, next) => {
       if (err) {
         return next(err);
       }
-      res.redirect('/items');
+      res.redirect('/account');
     });
   })(req, res, next);
 };
