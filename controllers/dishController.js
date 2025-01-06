@@ -42,7 +42,6 @@ exports.createDish = async (req, res) => {
         if (!req.user) {
             return res.status(401).send('Unauthorized. User not logged in.');
         }
-
         const newDish = {
             name: req.body.name.trim(),
             servings: parseInt(req.body.servings),
@@ -52,10 +51,9 @@ exports.createDish = async (req, res) => {
             description: req.body.description || null,
             recipe: req.body.recipe || null
         };
-
         const dish = new Dish(newDish);
         await dish.save();
-
+        
         const user = await User.findById(req.user._id);
         user.dishes.push(dish._id);
         await user.save();
@@ -89,9 +87,7 @@ exports.updateDish = async (req, res) => {
             user: req.user._id,
             recipe: req.body.recipe
         }
-        console.log(updatedDish);
-        const dish = await Dish.findByIdAndUpdate(req.params.id, updatedDish);
-        console.log(dish);
+        await Dish.findByIdAndUpdate(req.params.id, updatedDish);
         res.redirect('/dishes/' + req.params.id);
     }
     catch (err) {
