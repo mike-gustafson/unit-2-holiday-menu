@@ -72,7 +72,28 @@
     background-repeat: no-repeat;
     overflow: hidden; 
 }
-
+.account-center {
+    background-image: url("images/dane-deaner-l2eTNVrendQ-unsplash.jpg");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    overflow: hidden; 
+    height: 100%;
+}
+.account-dashboard {
+    height: 95%;
+    padding: 20px;
+}
+.account-dashboard > h2 {
+    margin-top: 10px;
+}
+.new-dish {
+    background-image: url("images/alyson-mcphee-yWG-ndhxvqY-unsplash.jpg");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    overflow: hidden; 
+}
 .opacity-50 {
     background-color: rgba(250, 250, 250, 0.5);
 }
@@ -88,4 +109,46 @@
 
 .error404 {
     padding: 20px;
+}
+
+.main-card {
+    height: 80vh;
+}
+
+textarea.materialize-textarea {
+    height: 6rem;
+    resize: none;
+}
+
+.checkbox-group input[type="checkbox"]:checked + span {
+    color: #4CAF50;
+    font-weight: 600;
+}
+
+.dish-name {
+    display: block;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 100%;
+    font-size: clamp(1.2rem, 3vw, 2rem);
+    padding: 0 10px;
+    font-weight: 600;
+}
+
+.repsonsive-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 60px;
+    width: 100%;
+    overflow: hidden;
+}
+
+.bold {
+    font-weight: 700;
+}
+
+.btn {
+    margin-bottom: 10px;
 }

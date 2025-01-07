@@ -1,6 +1,5 @@
 const Event = require('../models/event');
 
-// router.get('/', eventController.getEvents);
 exports.getEvents = async (req, res) => {
     try {
         const usersEvents = await Event.find();
@@ -18,12 +17,10 @@ exports.getEvents = async (req, res) => {
     }
 };
 
-// router.get('/new', ensureAuthenticated, eventController.newEventForm);
 exports.newEventForm = (req, res) => {
     res.render('events/new');
 };
 
-// router.post('/', ensureAuthenticated, eventController.createEvent);
 exports.createEvent = async (req, res) => {
     try {
         const { eventName, eventDate, eventType, eventLocation } = req.body;
@@ -35,14 +32,12 @@ exports.createEvent = async (req, res) => {
     }
 };
 
-// route.get('/:id/invite', ensureAuthenticated, eventController.inviteForm);
 exports.inviteToEvent = async (req, res) => {
     const event = await Event.findById(req.params.id);
     const user = await User.find();
     res.render('events/invite', { event, contacts: user.contacts });
 };
 
-// router.get('/:id/join', ensureAuthenticated, eventController.attendEvent);
 exports.attendEvent = async (req, res) => {
     try {
         const event = await Event.findById(req.params.id);
@@ -54,7 +49,6 @@ exports.attendEvent = async (req, res) => {
     }
 };
 
-// router.get('/:id/leave', ensureAuthenticated, eventController.unattendEvent);
 exports.unattendEvent = async (req, res) => {
     try {
         const event = await Event.findById(req.params.id);
@@ -66,13 +60,11 @@ exports.unattendEvent = async (req, res) => {
     }
 }
 
-// router.get('/:id/edit', ensureAuthenticated, eventController.editEventForm);
 exports.editEventForm = async (req, res) => {
     const event = await Event.findById(req.params.id);
     res.render('events/edit', { event });
 };
 
-// router.put('/:id', ensureAuthenticated, eventController.updateEvent);
 exports.updateEvent = async (req, res) => {
     try {
         const { name, date } = req.body;
@@ -84,7 +76,6 @@ exports.updateEvent = async (req, res) => {
     }
 }
 
-// router.delete('/:id', ensureAuthenticated, eventController.deleteEvent);
 exports.deleteEvent = async (req, res) => {
     try {
         await Event.findByIdAndDelete(req.params.id);

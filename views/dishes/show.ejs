@@ -13,24 +13,53 @@
 <body>
     <%- include('../partials/navBar') %>
 
-        <div class="container">
-            <div class="card rounded z-depth-2">
-                <h1>
-                    <%= dish.name %>
-                </h1>
-                <p>
-                    <%= dish.description %>
-                </p>
-                <p>Servings: <%= dish.servings %>
-                </p>
-                <p>Dietary Accommodations: <%= dish.dietaryAccommodations %>
-                </p>
-                <p>Category: <%= dish.category %>
-                </p>
-                <% if (user.id == dish.user) { %>
+    <div class="container mx-auto">
+        <div class="card new-dish rounded row">
+            <div class="col s4 opacity-50-dark">
+                <div class="responsive-container">
+                    <h2 class="dish-name"><%= dish.name %></h2>
+                </div>
+                <div class="row dish-info">
+                    <div class="col s3">
+                        <span><%= dish.category.toUpperCase() %></span>
+                    </div>
+                    <div class="col s3">
+                        <span class="bold">Servings:</span> <%= dish.servings %>
+                    </div>  
+                    <div class="col s6">
+                        <% if (isFavorite) { %>
+                        <form action="/account/removeFavorite" method="POST">
+                            <input type="hidden" name="dishId" value="<%= dish.id %>">
+                            <input type="hidden" name="userId" value="<%= user.id %>">
+                            <button type="submit" class="btn-floating btn-small waves-effect waves-light red" title="Remove from favorites">
+                                <i class="material-icons">favorite</i>
+                            </button>
+                        </form>
+                        <% } else { %>
+                        <form action="/account/addFavorite" method="POST">
+                            <input type="hidden" name="dishId" value="<%= dish.id %>">
+                            <input type="hidden" name="userId" value="<%= user.id %>">
+                            <button type="submit" class="btn-floating btn-small waves-effect waves-light" title="Save to favorites">
+                                <i class="material-symbols-outlined">favorite</i>
+                            </button>
+                        </form>
+                        <% } %>
+                    </div>
+                </div>
+                <p class="description"><%= dish.description %></p>
+
+                <div class="content-section">
+                    <span class="bold">Dietary Accommodations</span><br> 
+                    <%= dish.dietaryAccommodations %></p>
+                </div>
+                <% if (user && (user.id == dish.user)) { %>
                     <a href="/dishes/<%= dish.id %>/edit" class="waves-effect waves-light btn">Edit</a>
                 <% } %>
-                <a href="/account" class="waves-effect waves-light btn">Back to Dashboard</a>
+                <a href="/account" class="waves-effect waves-light btn">Home</a>
+                <a href="/dishes" class="waves-effect waves-light btn">All Dishes</a>
+            </div>
+            <div class="col s8">
             </div>
         </div>
+    </div>
 </body>

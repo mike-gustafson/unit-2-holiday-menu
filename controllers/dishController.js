@@ -1,8 +1,13 @@
 const Dish = require('../models/dish');
-const user = require('../models/user');
 const User = require('../models/user');
 
-const categories = ['appetizer', 'entree', 'dessert', 'beverage', 'other'];
+const categories = require('../config/dishCategoryOptions');
+const dietaryAccommodations = require('../config/dishDietaryOptions');
+
+const parseDietaryAccommodations = (list) => {
+    if (!list) return [];
+    return list.split(',');
+};
 
 exports.getDishes = async (req, res) => {
     try {
@@ -27,14 +32,16 @@ exports.getDishes = async (req, res) => {
 exports.showDish = async (req, res) => {
     try {
         const dish = await Dish.findById(req.params.id);
-        res.render('dishes/show', { dish });
+        const user = await User.findById(req.user.id);
+        const isFavorite = user.favoriteDishes.includes(dish._id);
+        res.render('dishes/show', { dish, isFavorite });
     } catch (err) {
         res.status(500).send('Error getting dish.');
     }
 }
 
 exports.newDishForm = (req, res) => {
-    res.render('dishes/new', { categories });
+    res.render('dishes/new', { categories, dietaryAccommodations });
 };
 
 exports.createDish = async (req, res) => {
@@ -42,10 +49,13 @@ exports.createDish = async (req, res) => {
         if (!req.user) {
             return res.status(401).send('Unauthorized. User not logged in.');
         }
+
+        let dietaryAccommodations = parseDietaryAccommodations(req.body.dietaryAccommodations);
+
         const newDish = {
             name: req.body.name.trim(),
             servings: parseInt(req.body.servings),
-            dietaryAccommodations: req.body.dietaryAccommodations || [],
+            dietaryAccommodations: dietaryAccommodations || [],
             category: req.body.category.trim().toLowerCase() || 'other',
             user: req.user._id,
             description: req.body.description || null,
@@ -53,7 +63,7 @@ exports.createDish = async (req, res) => {
         };
         const dish = new Dish(newDish);
         await dish.save();
-        
+
         const user = await User.findById(req.user._id);
         user.dishes.push(dish._id);
         await user.save();
@@ -73,7 +83,7 @@ exports.editDishForm = async (req, res) => {
     if (dish.user != req.user.id) {
         return res.status(403).send('Unauthorized. User does not own this dish.');
     } else {
-        res.render('dishes/edit', { dish, categories });
+        res.render('dishes/edit', { dish, categories, dietaryAccommodations });
     }
 };
 
@@ -83,9 +93,8 @@ exports.updateDish = async (req, res) => {
             name: req.body.name,
             servings: req.body.servings,
             dietaryAccommodations: req.body.dietaryAccommodations,
-            category: req.body.category,
-            user: req.user._id,
-            recipe: req.body.recipe
+            description: req.body.description,
+            category: req.body.category
         }
         await Dish.findByIdAndUpdate(req.params.id, updatedDish);
         res.redirect('/dishes/' + req.params.id);

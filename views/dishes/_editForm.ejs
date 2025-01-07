@@ -1,0 +1,43 @@
+<form action="/dishes/<%= dish.id %>?_method=PUT" method="POST">
+    <input type="hidden" name="_method" value="PUT">
+    <div class="row">
+        <div class="input-field col s9">
+            <input type="text" name="name" id="name" value="<%= dish.name %>" required>
+            <label for="name">Dish Name</label>
+        </div>
+        <div class="input-field col s3">
+            <input type="number" name="servings" id="servings" value="<%= dish.servings %>" required>
+            <label for="servings">Servings</label>
+        </div>
+    </div>
+    <div class="input-field">
+        <textarea name="description" id="description" class="materialize-textarea"><%= dish.description %></textarea>
+        <label for="description">Description</label>
+    </div>
+    
+    <h5>Dietary Accommodations</h5>
+    <div class="checkbox-group">
+        <% dietaryAccommodations.forEach(option => { %>
+            <label>
+                <input type="checkbox" name="dietaryAccommodations[]" value="<%= option %>"
+                <%= dish.dietaryAccommodations.includes(option) ? 'checked' : '' %> class="filled-in">
+                <span><%= option %></span>
+            </label>
+        <% }) %>
+    </div>
+
+    <h5>Category</h5>
+    <div class="radio-group">
+        <% categories.forEach(function(category) { %>
+            <label>
+                <input type="radio" name="category" value="<%= category %>" <%=category==='Other'
+                    ? 'checked' : '' %>>
+                <span>
+                    <%= category %>
+                </span>
+            </label>
+            <% }) %>
+    </div>
+    <button class="btn waves-effect waves-light" type="submit">submit</button>
+    <a href="/dishes/<%= dish.id %>" class="waves-effect waves-light btn">Cancel</a>
+</form>

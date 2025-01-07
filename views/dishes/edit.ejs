@@ -4,53 +4,34 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dishes</title>
+    <title>Editing <%= dish.name %></title>
     <%- include('../partials/header.ejs') %>
 </head>
+
 
 <body>
     <%- include('../partials/navBar') %>
 
-    <form action="/dishes/<%= dish.id %>?_method=PUT" method="POST">
-        <input type="hidden" name="_method" value="PUT">
-            <div class="container">
-                <div class="card rounded z-depth-2">
-                    <h1>Editing <%= dish.name %></h1>
-                    <div class="input-field">
-                        <input type="text" name="name" id="name" value="<%= dish.name %>" required>
-                        <label for="name">Dish Name</label>
-                    </div>
-                    <div class="input-field">
-                        <input type="text" name="description" id="description" value="<%= dish.description %>">
-                        <label for="description">Description</label>
-                    </div>
-                    <div class="input-field">
-                        <input type="number" name="servings" id="servings" value="<%= dish.servings %>" required>
-                        <label for="servings">Servings</label>
-                    </div>
-                    <div class="input-field">
-                        <input type="text" name="dietaryAccommodations" id="dietaryAccommodations"
-                            value="<%= dish.dietaryAccommodations %>">
-                        <label for="dietaryAccommodations">Dietary Accommodations</label>
-                    </div>
-                    <h5>Category</h5>
-                    <div class="radio-group">
-                        <% categories.forEach(function(category) { %>
-                            <label>
-                                <input type="radio" name="category" value="<%= category %>" <%=category===dish.category
-                                    ? 'checked' : '' %>>
-                                <span>
-                                    <%= category %>
-                                </span>
-                            </label>
-                            <% }) %>
-                    </div>
-                    <button class="btn waves-effect waves-light" type="submit">Edit Dish</button>
-                </div>
+    <div class="container mx-auto">
+        <div class="card new-dish rounded row">
+            <div class="col s4 opacity-50-dark">
+                <%- include('_editForm.ejs') %>
+                
+                <form id="delete-form" action="/dishes/<%= dish.id %>?_method=DELETE" method="POST" onsubmit="return confirmDelete();">
+                    <button class="waves-effect waves-light btn red lighten-1" type="submit">Delete</button>
+                </form>
             </div>
-        </form>
-        <form action="/dishes/<%= dish.id %>?_method=DELETE" method="POST">
-            <button class="waves-effect waves-light btn" type="submit">Delete</button>
-        </form>
+            <div class="col s8">
+            </div>
+        </div>
+    </div>
+
+<script>
+        function confirmDelete() {
+            return confirm('Are you sure you want to delete this dish? This action cannot be undone.');
+        }
+    </script>
+    
 </body>
+
 </html>

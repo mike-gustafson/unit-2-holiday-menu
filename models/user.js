@@ -1,6 +1,5 @@
 const mongoose = require('mongoose');
 const passportLocalMongoose = require('passport-local-mongoose');
-const dishSchema = require('./dish');
 
 const userSchema = new mongoose.Schema({
   email: { 
@@ -13,7 +12,7 @@ const userSchema = new mongoose.Schema({
   lastName: { type: String, trim: true },
   dietaryAccommodations: { type: [String] },
   dishes: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Dish' }],
-  favoriteDishes: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Item' }],
+  favoriteDishes: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Dish' }],
   connections: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
   eventsHosting: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Event' }],
   eventsAttending: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Event' }],
