@@ -1,0 +1,12 @@
+<% if (events.length > 0) { %>
+<h4>Your Events</h4>
+<ul>
+  <% events.forEach(function(event) { %>
+  <li>
+    <a href="/events/<%= event.id %>"><%= event.name %></a>
+  </li>
+  <% }) %>
+</ul>
+<% } else { %>
+<h4>No Events</h4>
+<% } %>

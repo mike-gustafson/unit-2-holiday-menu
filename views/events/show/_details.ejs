@@ -1,0 +1,18 @@
+<div class="responsive-container">
+  <h2 class="event-name"><%= event.name %></h2>
+  <div class="row">
+    <div class="col s6">
+      <span class="event-creator-name">Hosted By <%= hostName %></span>
+    </div>
+  </div>
+  <hr>
+  <div class="row event-info">
+    <div class="col s6">
+      <span><%= parsedTime %> - <%= parsedDate %></span>
+    </div>
+    <div class="col s6">
+      <span><%= event.location %></span>
+    </div>
+  </div>
+  <p class="description"><%= event.description %></p>
+</div>

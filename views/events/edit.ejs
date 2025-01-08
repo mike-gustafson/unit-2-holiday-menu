@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title><%= dish.name %></title>
+  <title>Editing <%= event.name %></title>
   <%- include('../partials/header') %>
 </head>
 
@@ -12,10 +12,10 @@
   <%- include('../partials/navBar') %>
 
   <div class="container mx-auto height-80">
-    <div class="card new-dish rounded row height-full">
+    <div class="card new-event rounded row height-full">
       <div class="col s4 opacity-50-dark height-full">
-        <%- include('./show/_details') %>
-        <%- include('./show/_navButtons') %>
+        <%- include('./edit/_form') %>
+        <%- include('./edit/_delete') %>
       </div>
       <div class="col s8 height-full">
       </div>

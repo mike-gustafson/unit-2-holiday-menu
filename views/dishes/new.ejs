@@ -2,22 +2,24 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Add a Dish</title>
-    <%- include('../partials/header.ejs') %>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Add a Dish</title>
+  <%- include('../partials/header') %>
 </head>
 
 <body>
-    <%- include('../partials/navBar') %>
+  <%- include('../partials/navBar') %>
 
-    <div class="container mx-auto">
-        <div class="card new-dish rounded row">
-            <div class="col s4 opacity-50-dark">
-                <%- include('_newForm.ejs') %>
-            </div>
-            <div class="col s8">
-            </div>
-        </div>
+  <div class="container mx-auto height-80">
+    <div class="card new-dish rounded row height-full">
+      <div class="col s4 opacity-50-dark height-full">
+        <%- include('./new/_form.ejs') %>
+      </div>
+      <div class="col s8 height-full">
+      </div>
     </div>
+  </div>
+
 </body>
+</html>

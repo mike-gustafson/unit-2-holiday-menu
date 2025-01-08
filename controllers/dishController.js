@@ -9,6 +9,14 @@ const parseDietaryAccommodations = (list) => {
     return list.split(',');
 };
 
+const parseUserName = async (dish) => {
+    const dishCreator = await User.findById(dish.user);
+    const firstName = dishCreator.firstName.slice(0, 1).toUpperCase();
+    const lastName = dishCreator.lastName;
+    const creatorName = firstName + '. ' + lastName;
+    return creatorName;
+};
+
 exports.getDishes = async (req, res) => {
     try {
         const dishes = await Dish.find();
@@ -17,9 +25,6 @@ exports.getDishes = async (req, res) => {
             const user = await User.findById(req.user.id);
             const userDishes = dishes.filter(dish => dish.user.equals(user._id));
             const otherDishes = dishes.filter(dish => !dish.user.equals(user._id));
-            dishes.forEach(dish => {
-                console.log('dish user:' , dish.user);
-            });
             res.render('dishes/index', { dishes: [], userDishes, otherDishes });
         } else {
             return res.render('dishes/index', { dishes, userDishes: [], otherDishes: [] });
@@ -33,8 +38,9 @@ exports.showDish = async (req, res) => {
     try {
         const dish = await Dish.findById(req.params.id);
         const user = await User.findById(req.user.id);
+        const dishCreatorName = await parseUserName(dish);
         const isFavorite = user.favoriteDishes.includes(dish._id);
-        res.render('dishes/show', { dish, isFavorite });
+        res.render('dishes/show', { dish, isFavorite, dishCreatorName });
     } catch (err) {
         res.status(500).send('Error getting dish.');
     }

@@ -1,0 +1,35 @@
+<div class="responsive-container">
+  <h2 class="dish-name"><%= dish.name %></h2>    
+  <div class="row">
+    <div class="col s6">
+      <%- include('./_favorite') %>
+    </div>  
+    <div class="col s6">
+      <span class="dish-creator-name">By <%= dishCreatorName %></span>
+    </div>  
+  </div>  
+</div>
+<hr>
+<div class="row dish-info">
+  <div class="col s3">
+    <span><%= dish.category.toUpperCase() %></span>
+  </div>
+  <div class="col s3">
+    <span class="bold">Servings:</span> <%= dish.servings %>
+  </div> 
+  <div class="col s6">
+  </div>
+</div>
+<p class="description"><%= dish.description %></p>
+<div class="content-section">
+  <span class="bold">Dietary Accommodations</span><br> 
+  <% if (dish.dietaryAccommodations.length > 1) { %>
+    <% dish.dietaryAccommodations.forEach(diet => { %> 
+    <span><%= diet %> | </span>
+    <% }) %> 
+  <% } else { %>
+    <% dish.dietaryAccommodations.forEach(diet => { %> 
+    <span><%= diet %></span>
+    <% }) %>
+  <% } %>
+</div>

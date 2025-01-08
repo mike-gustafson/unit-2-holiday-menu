@@ -1,0 +1,17 @@
+<% if (isFavorite) { %>
+<form action="/account/removeFavorite" id="removeFavoriteForm" method="POST">
+  <input type="hidden" name="dishId" value="<%= dish.id %>">
+  <input type="hidden" name="userId" value="<%= user.id %>">
+  <a href="#" onclick="document.getElementById('removeFavoriteForm').submit();" class="waves-effect waves-red" title="Save to favorites">
+    Remove from Favorites
+  </a>
+</form>
+<% } else { %>
+<form action="/account/addFavorite" id="addFavoriteForm" method="POST">
+  <input type="hidden" name="dishId" value="<%= dish.id %>">
+  <input type="hidden" name="userId" value="<%= user.id %>">
+  <a href="#" onclick="document.getElementById('addFavoriteForm').submit();" class="waves-effect waves-green" title="Save to favorites">
+    Save to Favorites
+  </a>
+</form>
+<% } %>

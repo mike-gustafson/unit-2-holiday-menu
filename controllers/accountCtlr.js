@@ -5,8 +5,9 @@ exports.home = async (req, res) => {
     const userId = req.user._id;
     const user = await User.findById(userId)
     .populate('dishes')
-    .populate('favoriteDishes');
-    console.log('user:', user);
+    .populate('favoriteDishes')
+    .populate('eventsHosting')
+    .populate('eventsAttending');
     res.render('account/index', { user });
   }
   catch (err) {

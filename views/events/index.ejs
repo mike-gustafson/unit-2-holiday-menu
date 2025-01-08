@@ -4,23 +4,25 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Main</title>
-  <%- include('../partials/header.ejs') %>
+  <title>Events</title>
+  <%- include('../partials/header') %>
 </head>
 
 <body>
   <%- include('../partials/navBar') %>
 
-    <h1>This is the landing page for Events.</h1>
-    <p>Here are the actions they should be able to do:</p>
-    <ul>
-      <li>see list of events past and present</li>
-      <li>create a new event</li>
-      <li>view an event</li>
-      <li>edit an event</li>
-      <li>delete an event</li>
-      <li>sign up for an event</li>
-      <li>sign up to bring a dish to an event</li>
-      <li>view the dishes they are bringing to an event</li>
-    </ul>
+  <div class="container mx-auto height-80">
+    <div class="card new-event rounded row height-full">
+      <div class="col s4 opacity-50-dark height-full">
+        <%- include('./index/_allEvents') %>
+        <%- include('./index/_navButtons') %>          
+      </div>
+      <div class="col s4">
+      </div>
+      <div class="col s4 opacity-50-dark height-full">
+      </div>
+    </div>  
+  </div>
+    
 </body>
+</html>

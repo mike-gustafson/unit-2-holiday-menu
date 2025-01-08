@@ -1,0 +1,26 @@
+<form action="/events" method="POST">
+  <div class="row">
+    <div class="input-field col s9">
+      <input type="text" name="name" id="name" required>
+      <label for="name">Event Name</label>
+    </div>
+    <div class="input-field">
+      <input type="date" name="date" id="date" required>
+      <label for="date">Date</label>
+    </div>
+  </div>
+  <div class="input-field">
+    <input type="time" name="time" id="time" required>
+    <label for="time">Time</label>
+  </div>
+  <div class="input-field">
+    <input type="text" name="location" id="location" required>
+    <label for="location">Location</label>
+  </div>
+  <div class="input-field">
+    <textarea name="description" id="description" class="materialize-textarea"></textarea>
+    <label for="description">Description</label>
+  </div>
+  <button class="btn waves-effect waves-light" type="submit">Create Event</button>
+  <a href="/account" class="waves-effect waves-light btn">Back to Dashboard</a>
+</form>

@@ -11,13 +11,13 @@
 <body>
   <%- include('../partials/navBar') %>
 
-    <div class="container">
-      <div class="card row z-depth-2 main-card">
-        <div class="col s3">
+    <div class="container height-80">
+      <div class="card row z-depth-2 main-card full-height">
+        <div class="col s3 full-height">
           <h3>Calendar</h3>
           <hr>
           <% if (user.eventsHosting.length> 0) { %>
-            <h4>hosting</h4>
+            <h4>Hosting</h4>
             <ul>
               <% user.eventsHosting.forEach(function(event) { %>
                 <li>
@@ -48,7 +48,7 @@
                       <hr>
                       <a href="events/new" class="waves-effect waves-light btn">Create Event</a>
         </div>
-        <div class="col s6 account-center">
+        <div class="col s6 account-center full-height">
           <div class="opacity-50-dark account-dashboard">
             <h2>Dashboard</h2>
             <p>Welcome, <%= user.firstName %>!</p>
@@ -61,7 +61,7 @@
             <p>You have connections with <%= user.connections.length %> people</p>
           </div>
         </div>
-        <div class="col s3">
+        <div class="col s3 full-height">
           <h4>Your Dishes</h4>
           <hr>
           <% if (user.dishes.length> 0) { %>

@@ -1,4 +1,6 @@
+const e = require('connect-flash');
 const Event = require('../models/event');
+const User = require('../models/user');
 
 exports.getEvents = async (req, res) => {
     try {
@@ -23,8 +25,14 @@ exports.newEventForm = (req, res) => {
 
 exports.createEvent = async (req, res) => {
     try {
-        const { eventName, eventDate, eventType, eventLocation } = req.body;
-        const event = new Event({ name: eventName, date: eventDate, eventType, location: eventLocation, user: req.user._id });
+        const newEvent = req.body;
+        const event = new Event(newEvent);
+        event.user = req.user.id;
+        event.guests.push(req.user.id);
+        const user = await User.findById(req.user.id);
+        user.eventsHosting.push(event._id);
+        await user.save();
+
         await event.save();
         res.redirect('/events');
     } catch (err) {
@@ -32,10 +40,30 @@ exports.createEvent = async (req, res) => {
     }
 };
 
+exports.showEvent = async (req, res) => {
+    try {
+        const event = await Event.findById(req.params.id);
+        const parsedDate = event.date.toLocaleDateString('en-US', {
+            year: '2-digit',
+            month: '2-digit',
+            day: '2-digit'
+        });
+        const parsedTime = event.date.toLocaleTimeString('en-US', {
+            hour: '2-digit',
+            minute: '2-digit'
+        });
+        const host = await User.findById(event.user);
+        const hostName = host.fullName;
+        res.render('events/show', { event, hostName, parsedDate, parsedTime });
+    } catch (err) {
+        res.status(500).send('Error showing event.');
+    }
+}
+
 exports.inviteToEvent = async (req, res) => {
     const event = await Event.findById(req.params.id);
     const user = await User.find();
-    res.render('events/invite', { event, contacts: user.contacts });
+    res.render('events/invite', { event, contacts: user.connections });
 };
 
 exports.attendEvent = async (req, res) => {
