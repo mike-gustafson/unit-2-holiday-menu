@@ -24,10 +24,27 @@ userSchema.virtual('fullName').get(function () {
   return `${this.firstName} ${this.lastName}`;
 });
 
+userSchema.virtual('allEvents').get(function () {
+  const events = this.eventsHosting.concat(this.eventsAttending);
+  const uniqueEvents = [];
+  const seenEventIds = new Set();
+  events.forEach(event => {
+      if (!seenEventIds.has(event.eventId)) {
+          if (!seenEventIds.has(event._id.toString())) {
+              seenEventIds.add(event._id.toString());
+              uniqueEvents.push(event);
+          }
+      }
+  });
+  return uniqueEvents;
+});
+
 userSchema.plugin(passportLocalMongoose, {
   usernameField: 'email',
 });
 
 userSchema.index({ email: 1 });
+
+
 
 module.exports = mongoose.model('User', userSchema);

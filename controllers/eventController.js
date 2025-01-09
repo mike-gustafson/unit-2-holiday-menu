@@ -4,16 +4,10 @@ const User = require('../models/user');
 
 exports.getEvents = async (req, res) => {
     try {
-        const usersEvents = await Event.find();
-        const events = usersEvents.map(event => {
-            return {
-                id: event._id,
-                name: event.name,
-                date: event.date.toDateString(),
-                host: event.user,
-            };
-        });
-        res.render('events/index', { events });
+        const user = await User.findById(req.user.id)
+            .populate('eventsHosting')
+            .populate('eventsAttending')
+        res.render('events/index', { events: user.allEvents});
     } catch (err) {
         res.status(500).send('Error getting events.');
     }
@@ -26,13 +20,14 @@ exports.newEventForm = (req, res) => {
 exports.createEvent = async (req, res) => {
     try {
         const newEvent = req.body;
+        newEvent.date = new Date(`${newEvent.date}T${newEvent.time}`);
         const event = new Event(newEvent);
         event.user = req.user.id;
         event.guests.push(req.user.id);
         const user = await User.findById(req.user.id);
         user.eventsHosting.push(event._id);
+        user.eventsAttending.push(event._id);
         await user.save();
-
         await event.save();
         res.redirect('/events');
     } catch (err) {
@@ -42,19 +37,11 @@ exports.createEvent = async (req, res) => {
 
 exports.showEvent = async (req, res) => {
     try {
-        const event = await Event.findById(req.params.id);
-        const parsedDate = event.date.toLocaleDateString('en-US', {
-            year: '2-digit',
-            month: '2-digit',
-            day: '2-digit'
-        });
-        const parsedTime = event.date.toLocaleTimeString('en-US', {
-            hour: '2-digit',
-            minute: '2-digit'
-        });
-        const host = await User.findById(event.user);
-        const hostName = host.fullName;
-        res.render('events/show', { event, hostName, parsedDate, parsedTime });
+        const event = await Event.findById(req.params.id)
+            .populate('user')
+            .populate('guests')
+            .populate('dishes');
+        res.render('events/show', { event });
     } catch (err) {
         res.status(500).send('Error showing event.');
     }

@@ -1,4 +1,4 @@
-<% if (user && (user.id == event.user)) { %>
+<% if (user && (user.id == event.user.id)) { %>
 <a href="/events/<%= event.id %>/edit" class="waves-effect waves-light btn">Edit</a>
 <% } %>
 <a href="/account" class="waves-effect waves-light btn">Home</a>

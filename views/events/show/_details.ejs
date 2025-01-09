@@ -1,18 +1,51 @@
 <div class="responsive-container">
-  <h2 class="event-name"><%= event.name %></h2>
   <div class="row">
-    <div class="col s6">
-      <span class="event-creator-name">Hosted By <%= hostName %></span>
+    <div class="col s3">
+      <div class="calendar-icon">
+        <div class="calendar-month">
+          <%= event.monthName %>
+        </div>
+        <div class="calendar-day">
+          <%= event.formattedDate.split('/')[1] %>
+        </div>
+      </div>
+    </div>
+    <div class="col s9">
+      <h5><%= event.name %></h5> 
+      <span class="event-creator-name">Hosted By <%= event.hostName %></span>
     </div>
   </div>
   <hr>
   <div class="row event-info">
-    <div class="col s6">
-      <span><%= parsedTime %> - <%= parsedDate %></span>
+    <div class="col s2">
+      <span>Where:</span>
     </div>
-    <div class="col s6">
-      <span><%= event.location %></span>
+    <div class="col s10">
+         <span><%= event.location %></span>
     </div>
   </div>
-  <p class="description"><%= event.description %></p>
+  <hr>
+  <div class="row event-description">
+    <div class="col s2">
+        <span>Info:</span>
+    </div>
+    <div class="col s10">
+        <span class="description"><%= event.description %></span>
+    </div>
+  </div>
+  <hr>
+  <div class="row event-attendees">
+    <div class="col s2">
+        <ul>
+            <li>Guests:</li>
+        </ul>
+    </div>
+    <div class="col s10">
+      <ul>
+        <% event.guests.forEach(function(guest) { %>
+        <li><%= guest.fullName %></li>
+        <% }) %>
+      </ul>
+    </div>
+  </div>
 </div>

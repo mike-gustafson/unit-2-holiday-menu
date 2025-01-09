@@ -1,21 +1,23 @@
 <form action="/events" method="POST">
   <div class="row">
-    <div class="input-field col s9">
-      <input type="text" name="name" id="name" required>
+    <div class="input-field col s8">
+      <input type="text" name="name" id="name" value="New Event" required>
       <label for="name">Event Name</label>
     </div>
-    <div class="input-field">
+    <div class="input-field col s4">
       <input type="date" name="date" id="date" required>
       <label for="date">Date</label>
     </div>
   </div>
-  <div class="input-field">
-    <input type="time" name="time" id="time" required>
-    <label for="time">Time</label>
-  </div>
-  <div class="input-field">
-    <input type="text" name="location" id="location" required>
-    <label for="location">Location</label>
+  <div class="row">
+    <div class="input-field col s8">
+      <input type="text" name="location" id="location" required>
+      <label for="location">Location</label>
+    </div>
+    <div class="input-field col s4">
+      <input type="time" name="time" id="time" required>
+      <label for="time">Time</label>
+    </div>
   </div>
   <div class="input-field">
     <textarea name="description" id="description" class="materialize-textarea"></textarea>
@@ -24,3 +26,15 @@
   <button class="btn waves-effect waves-light" type="submit">Create Event</button>
   <a href="/account" class="waves-effect waves-light btn">Back to Dashboard</a>
 </form>
+
+<script>
+    const today = new Date().toISOString().split('T')[0];
+    document.getElementById('date').min = today;
+    document.getElementById('date').value = today;
+
+    const now = new Date().toLocaleTimeString('en-US', {hour: '2-digit', minute: '2-digit'});
+    const hours = now.getHours().toString().padStart(2, '0');
+    const minutes = now.getMinutes().toString().padStart(2, '0');
+    const currentTime = `${hours}:${minutes}`;
+    document.getElementById('time').value = currentTime;
+</script>

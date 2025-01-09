@@ -2,13 +2,13 @@ const User = require('../models/user');
 
 exports.home = async (req, res) => {
   try {
-    const userId = req.user._id;
+    const userId = req.user.id;
     const user = await User.findById(userId)
     .populate('dishes')
     .populate('favoriteDishes')
     .populate('eventsHosting')
     .populate('eventsAttending');
-    res.render('account/index', { user });
+    res.render('account/index', { user, events: user.allEvents });
   }
   catch (err) {
     console.error('Error getting user:', err);
