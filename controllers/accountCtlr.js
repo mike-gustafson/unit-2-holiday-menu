@@ -2,6 +2,9 @@ const User = require('../models/user');
 
 exports.home = async (req, res) => {
   try {
+    if (!req.user) {
+      return res.redirect('/');
+    }
     const userId = req.user.id;
     const user = await User.findById(userId)
     .populate('dishes')
