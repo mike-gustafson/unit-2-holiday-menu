@@ -38,10 +38,6 @@ const dishSchema = new mongoose.Schema({
         index: true,
         required: true
     },
-    recipe: { 
-        type: mongoose.Schema.Types.ObjectId, 
-        ref: 'Recipe' 
-    },
 }, { timestamps: true });
 
 module.exports = mongoose.model('Dish', dishSchema);

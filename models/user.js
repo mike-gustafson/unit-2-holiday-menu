@@ -45,6 +45,4 @@ userSchema.plugin(passportLocalMongoose, {
 
 userSchema.index({ email: 1 });
 
-
-
 module.exports = mongoose.model('User', userSchema);

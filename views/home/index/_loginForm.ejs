@@ -1,0 +1,28 @@
+<h1 class="title">CrowdCater</h1>
+<h6 class="subtitle">Event meals made simple</h6>
+<br>
+<%- include('../../partials/_displayError') %>
+<form action="/login" method="POST" class="space-y-4">
+  <div class="row">
+    <div class="input-field col s8 offset-s1">
+      <input type="email" name="email" id="email" required />
+      <label for="email">E-Mail</label>
+    </div>
+  </div>
+  <div class="row">
+    <div class="input-field col s8 offset-s1">
+      <input type="password" name="password" id="password" required />
+      <label for="password">Password</label>
+    </div>
+  </div>
+  <div class="col s2"></div>
+  <div class="col s12">
+    <button type="submit" class="waves-effect waves-light btn green">Log In</button>
+    <hr>
+  </div>
+</form>
+<div class="col s12">
+  <a href="/account/register">Register</a>
+  <span>|</span>
+  <a href="/password">Forgot Password?</a>
+</div>

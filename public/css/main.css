@@ -1,0 +1,129 @@
+.height-full {
+    height: 100%;
+}
+.height-80 {
+    height: 80vh;
+}
+.rounded-top-left {
+    border-top-left-radius: 25px;
+}
+.padding-0 {
+    padding: 0;
+}
+.padding-20 {
+    padding: 20px;
+}
+.margin-0 {
+    margin: 0;
+}
+.rounded {
+    border-radius: 25px;
+}
+.background-image {
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    overflow: hidden;
+}
+.rounded-top {
+    border-top-left-radius: 25px;
+    border-top-right-radius: 25px;
+}
+.rounded-right {
+    border-top-right-radius: 25px;
+    border-bottom-right-radius: 25px;
+}
+.rounded-left {
+    border-top-left-radius: 25px;
+    border-bottom-left-radius: 25px;
+}
+.opacity-50 {
+    background-color: rgba(250, 250, 250, 0.5);
+}
+.opacity-50-dark {
+    background-color: rgba(250, 250, 250, 0.8);
+}
+.right-aligned-text {
+    display: block;
+    text-align: right;
+}
+
+
+
+
+
+.account-dashboard {
+    height: 95%;
+    padding: 20px;
+}
+.account-dashboard > h2 {
+    margin-top: 10px;
+}
+
+
+.error404 {
+    padding: 20px;
+}
+
+.main-card {
+    height: 80vh;
+}
+
+textarea.materialize-textarea {
+    height: 12rem;
+    resize: none;
+}
+
+.checkbox-group input[type="checkbox"]:checked + span {
+    color: #4CAF50;
+    font-weight: 600;
+}
+
+.dish-name, .event-name {
+    display: block;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 100%;
+    font-size: clamp(1.2rem, 3vw, 2rem);
+    padding: 0 10px;
+    margin: 0;
+    font-weight: 600;
+}
+.dish-creator-name, .event-creator-name {
+    display: block;
+    text-align: right;
+    font-size: .75rem;
+    padding: 0 20px;
+}
+
+
+.repsonsive-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 60px;
+    width: 100%;
+    overflow: hidden;
+}
+
+.bold {
+    font-weight: 700;
+}
+
+.btn {
+    margin-bottom: 10px;
+}
+
+.title {
+    font-weight: 600;
+    margin-bottom: 0;
+}
+.subtitle {
+    font-weight: 500;
+    text-align: right;
+    margin-top: -15px;
+    color:#039be5;
+}
+
+

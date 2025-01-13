@@ -1,26 +1,8 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title><%= event.name %></title>
-  <%- include('../partials/header') %>
-</head>
-
-<body>
-  <%- include('../partials/navBar') %>
-
-  <div class="container mx-auto height-80">
-    <div class="card new-event rounded row height-full">
-      <div class="col s4 opacity-50-dark height-full">
-        <%- include('./show/_details') %>
-        <%- include('./show/_navButtons') %>
-      </div>
-      <div class="col s8 height-full">
-      </div>
-    </div>
+<div class="card event-show background-image rounded row height-full">
+  <div class="col s4 opacity-50-dark height-full">
+    <%- include('./show/_details') %>
+    <%- include('./show/_navButtons') %>
   </div>
-
-</body>
-</html>
+  <div class="col s8 height-full">
+  </div>
+</div>

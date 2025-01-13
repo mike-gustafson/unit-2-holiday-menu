@@ -3,12 +3,13 @@ const mongoose = require('mongoose');
 const eventSchema = new mongoose.Schema({
     name: { type: String, required: true },
     date: { type: Date, required: true },
+    time: { type: String, required: true },
     location: { type: String, required: true },
     description: { type: String},
     dishes: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Dish' }],
     guests: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
     user: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
-    });
+    }, { timestamps: true });
 
 
     eventSchema.virtual('formattedDate').get(function() {

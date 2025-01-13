@@ -1,0 +1,45 @@
+.registration {
+    background-image: url("../images/jenn-kosar-67-1iw9rhzE-unsplash.jpg");
+}
+.password-reset {
+    background-image: url("../images/siddhesh-mangela-iKWmeWDw6qc-unsplash.jpg");
+ }
+ .account-index {
+    background-image: url("../images/dane-deaner-l2eTNVrendQ-unsplash.jpg");
+}
+.calendar-icon {
+    display: inline-block;
+    width: 50px;
+    height: 60px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    text-align: center;
+    background-color: #f5f5f5;
+    font-family: Arial, sans-serif;
+}
+.calendar-month {
+    background-color: #007bff;
+    color: #fff;
+    font-size: 1rem;
+    padding: 0;
+    border-bottom: 1px solid #ccc;
+    height: 20px
+}
+.calendar-day {
+    font-size: 2rem;
+    font-weight: bold;
+    margin: 0;
+    height: 35px;
+}
+.event-title {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin: 0;
+    padding: 0;
+}
+.event-host {
+    font-size: .8rem;
+    font-weight: 400;
+    margin: 0;
+    padding: 0;
+}

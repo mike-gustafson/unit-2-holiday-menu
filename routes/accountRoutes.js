@@ -1,16 +1,16 @@
 const express = require('express');
 const router = express.Router();
-const accountCtlr = require('../controllers/accountCtlr');
+const controller = require('../controllers/accountController');
 const { ensureAuthenticated } = require('../middleware/auth');
 
-router.get('/',                                 accountCtlr.home);
-router.get('/new',         ensureAuthenticated, accountCtlr.newForm);
-router.get('/edit',        ensureAuthenticated, accountCtlr.editForm);
-router.get('/delete',      ensureAuthenticated, accountCtlr.deleteConfirm);
-router.get('/profile',     ensureAuthenticated, accountCtlr.profile);
-router.get('/connections', ensureAuthenticated, accountCtlr.connections);
-router.post('/addFavorite', ensureAuthenticated, accountCtlr.addFavorite);
-router.post('/removeFavorite', ensureAuthenticated, accountCtlr.removeFavorite);
-router.delete('/:id',      ensureAuthenticated, accountCtlr.delete);
+router.get(   '/',                                    controller.home);
+router.get(   '/register',                            controller.register);
+router.get(   '/edit',           ensureAuthenticated, controller.editForm);
+router.get(   '/delete',         ensureAuthenticated, controller.deleteConfirm);
+router.get(   '/profile',        ensureAuthenticated, controller.profile);
+router.get(   '/connections',    ensureAuthenticated, controller.connections);
+router.post(  '/addFavorite',    ensureAuthenticated, controller.addFavorite);
+router.post(  '/removeFavorite', ensureAuthenticated, controller.removeFavorite);
+router.delete('/:id',            ensureAuthenticated, controller.delete);
 
 module.exports = router;

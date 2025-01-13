@@ -1,23 +1,26 @@
 <nav>
-    <div class="nav-wrapper light-blue darken-3">
-      <a href="/account" class="brand-logo center">CrowdCater</a>
-      <ul class="left hide-on-med-and-down">
-        <li><a href="/account"><i class="tooltipped material-icons right" data-tooltip="Home">home</i></a></li>
-        <li><a href="/events">Events</a></li>
-        <li><a href="/dishes">Dishes</a></li>
-        <li><a href="/account/connections">People</a></li>
-      </ul>
-      <ul class="right hide-on-med-and-down">
-        <li><a href="/account/profile"><i class="tooltipped material-icons right" data-tooltip="Profile">manage_accounts</i></a></li>
-        <li><a href="/logout"><i class="tooltipped material-icons right" data-tooltip="Logout">logout</i></a></li>
-      </ul>
-    </div>
+  <div class="nav-wrapper light-blue darken-3">
+    <a href="/account" class="brand-logo center">CrowdCater</a>
+    <% if (user) { %>
+    <ul class="left hide-on-med-and-down">
+      <li><a href="/account"><i class="tooltipped material-icons right" data-tooltip="Home">home</i></a></li>
+      <li><a href="/events">Events</a></li>
+      <li><a href="/dishes">Dishes</a></li>
+      <li><a href="/account/connections">People</a></li>
+    </ul>
+    <ul class="right hide-on-med-and-down">
+      <li><a href="/account/profile"><i class="tooltipped material-icons right" data-tooltip="Profile">manage_accounts</i></a></li>
+      <li><a href="/logout"><i class="tooltipped material-icons right" data-tooltip="Logout">logout</i></a></li>
+    </ul> 
+    <% } %>
+  </div>
+</nav>
 
-  </nav>
-
-  <script>
-    document.addEventListener('DOMContentLoaded', function () {
-      const tooltips = document.querySelectorAll('.tooltipped');
-      M.Tooltip.init(tooltips);
-    });
-  </script>
+<% if (user) { %>
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const tooltips = document.querySelectorAll('.tooltipped');
+    M.Tooltip.init(tooltips);
+  });
+</script> 
+<% } %>

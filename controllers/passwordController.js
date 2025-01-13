@@ -4,7 +4,11 @@ const nodemailer = require('nodemailer');
 const User = require('../models/user');
 
 exports.requestForm = async (req, res) => {
-    res.render('account/password/requestReset')
+    res.render('layout', {
+        title: 'Reset Password',
+        cssFile: 'account.css',
+        view: 'account/passwordReset',
+    });
 }
 
 exports.createResetToken = async (req, res) => {
@@ -37,7 +41,11 @@ exports.createResetToken = async (req, res) => {
                 <p>This link is valid for 1 hour.</p>`,
         }
         await transporter.sendMail(mailOptions)
-        res.render('account/password/emailSent')
+        res.render('layout', {
+            title: 'Password Reset Sent',
+            cssFile: 'account.css',
+            view: 'account/passwordResetSent',
+        })
     } catch (err) {
         console.error('error during reset:', err)
         res.status(500).send('error processing request')
@@ -45,7 +53,11 @@ exports.createResetToken = async (req, res) => {
 }
 
 exports.resetForm = (req, res) => {
-    res.render('account/password/reset', { token: req.params.token })
+    res.render('layout', {
+        title: 'Reset Password',
+        cssFile: 'account.css',
+        view: 'account/password/reset', 
+        token: req.params.token })
 }
 
 exports.resetPassword = async (req, res) => {
@@ -68,7 +80,7 @@ exports.resetPassword = async (req, res) => {
           if (err) {
             return next(err);
           }
-          res.redirect('/items');
+          res.redirect('/account');
         });
     } catch (err) {
         console.error('Error during password reset:', err);

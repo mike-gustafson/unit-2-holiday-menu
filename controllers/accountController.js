@@ -1,3 +1,4 @@
+const event = require('../models/event');
 const User = require('../models/user');
 
 exports.home = async (req, res) => {
@@ -11,7 +12,17 @@ exports.home = async (req, res) => {
     .populate('favoriteDishes')
     .populate('eventsHosting')
     .populate('eventsAttending');
-    res.render('account/index', { user, events: user.allEvents });
+    const events = user.allEvents;
+    for (const event of events) {
+      event.user = await User.findById(event.user);
+      event.host = event.user.fullName;
+    };
+    res.render('layout', {
+      user: user,
+      events: events,
+    title: 'Home',
+    cssFile: 'account.css',
+    view: 'account/index'});
   }
   catch (err) {
     console.error('Error getting user:', err);
@@ -19,8 +30,12 @@ exports.home = async (req, res) => {
   }
 };
 
-exports.newForm = (req, res) => {
-  res.render('account/register');
+exports.register = (req, res) => {
+  res.render('layout', { 
+    cssFile: 'account.css',
+    title: 'Register',
+    view: 'account/register'
+  });
 };
 
 exports.editForm = (req, res) => {

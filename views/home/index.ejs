@@ -1,22 +1,8 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>CrowdCater</title>
-  <%- include('../partials/header') %>
-</head>
-
-<body>
-  <div class="container mx-auto row height-80">
-    <div class="col s8 no-padding height-full">
-      <%- include('./index/_learnMore') %>
-    </div>
-    <div class="col s4 opacity-50 height-full">
-      <%- include('../partials/loginForm') %>
-    </div>
+<div class="card rounded-top-left row height-full">
+  <div class="col s8 no-padding height-full">
+    <%- include('./index/_learnMore') %>
   </div>
-
-</body>
-</html>
+  <div class="col s4 height-full">
+    <%- include('./index/_loginForm') %>
+  </div>
+</div>

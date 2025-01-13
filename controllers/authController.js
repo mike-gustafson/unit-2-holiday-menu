@@ -1,34 +1,21 @@
 const User = require('../models/user');
 const passport = require('passport');
 
-exports.registerForm = (req, res) => {
-  res.render('account/register');
-};
-
 exports.register = async (req, res) => {
-  const { password, firstName, lastName, email, dietaryAccommodations } = req.body;
-
   try {
     const user = new User({  
-      firstName, 
-      lastName, 
-      email, 
-      dietaryAccommodations 
+      firstName: req.body.firstName, 
+      lastName: req.body.lastName, 
+      email: req.body.email.toLowerCase(), 
+      dietaryAccommodations: req.body.dietaryAccommodations
     });
-    user.email = email.toLowerCase();
-
-    await User.register(user, password);
-
+    await User.register(user, req.body.password);
     req.flash('success', 'Registration successful! Please log in.');
-    res.redirect('/login');
+    res.redirect('/');
   } catch (err) {
     req.flash('error', 'An error occurred during registration.');
-    res.redirect('/register');
+    res.redirect('account/register');
   }
-};
-
-exports.loginForm = (req, res) => {
-  res.redirect('/');
 };
 
 exports.login =  (req, res, next) => { 

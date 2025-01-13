@@ -8,8 +8,7 @@ const methodOverride = require('method-override');
 const flash = require('connect-flash');
 
 const User = require('./models/user');
-const authRoutes = require('./routes/auth');
-const itemRoutes = require('./routes/itemRoutes');
+const authRoutes = require('./routes/authRoutes');
 const eventRoutes = require('./routes/eventRoutes');
 const accountRoutes = require('./routes/accountRoutes');
 const passwordRoutes = require('./routes/passwordRoutes');
@@ -50,17 +49,21 @@ app.use(methodOverride('_method'));
 app.use(express.static('public'));
 app.set('view engine', 'ejs');
 
+
 // Routes
 app.use(authRoutes);
-app.use('/items', itemRoutes);
 app.use('/dishes', dishRoutes);
 app.use('/events', eventRoutes);
 app.use('/account', accountRoutes);
 app.use('/password', passwordRoutes);
 
 app.get('/', (req, res) => {
-    res.render('home/');
+  res.render('layout', { 
+    cssFile: 'home.css',
+    title: 'CrowdCater',
+    view: 'home/index'
   });
+});
 
 // Start server
 app.listen(3003, () => {

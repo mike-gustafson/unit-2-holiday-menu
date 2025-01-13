@@ -1,0 +1,31 @@
+.bg-home {
+    background-image: url("../images/pablo-merchan-montes-GFW3dJRiMsQ-unsplash.jpg");
+    height: 100%;
+}
+.bg-learn-more {
+    background-image: url("../images/annie-spratt-L6GydBHMVGQ-unsplash.jpg");
+    height: 100%;
+}
+.learn-more {
+    display: flex;
+    align-items: flex-start;
+    font-weight: 500;
+}
+.about-1 {
+    background-image: url("../images/evelyn-semenyuk-IfG34eJKhsE-unsplash.jpg");
+}
+.about-2 {
+    background-image: url("../images/eaters-collective-12eHC6FxPyg-unsplash.jpg");
+}
+.about-3 {
+    background-image: url("../images/dan-gold-4_jhDO54BYg-unsplash.jpg");
+}
+.opacity-learn-more {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: auto;
+    min-height: 100%;
+    background: rgba(255, 255, 255, 0.3);
+}

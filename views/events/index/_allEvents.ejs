@@ -1,29 +1,23 @@
 <% if (events.length> 0) { %>
-  <h4>Your Calendar</h4>
-  <div class="container">
+  <h4>Upcoming</h4>
     <% events.forEach(function(event) { %>
-    <div class="card">
-      <div class="row">
-        <div class="col s3">
-          <div class="calendar-icon">
-            <div class="calendar-month">
-              <%= event.monthName %>
-            </div>
-            <div class="calendar-day">
-              <%= event.formattedDate.split('/')[1] %>
-            </div>
-          </div>
+    <div class="col s3">
+      <div class="calendar-icon">
+        <div class="calendar-month">
+          <%= event.monthName %>
         </div>
-        <div class="col s9">
-          <div class="card-title">
-            <span class="card-title"><%= event.name %></span>
-            <a href="/events/<%= event._id %>" class="btn">More Info</a>
-          </div>
+        <div class="calendar-day">
+          <%= event.formattedDate.split('/')[1] %>
         </div>
-      </div> 
+      </div>
+    </div>
+    <div class="col s9">
+      <div class="card-title">
+        <span class="card-title"><%= event.name %></span>
+        <a href="/events/<%= event._id %>" class="btn">More Info</a>
+      </div>
     </div>
     <% }) %>
-  </div>
   <% } else { %>
   <h4>No Events</h4>
   <% } %>

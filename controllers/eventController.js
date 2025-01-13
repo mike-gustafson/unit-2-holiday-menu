@@ -7,14 +7,21 @@ exports.getEvents = async (req, res) => {
         const user = await User.findById(req.user.id)
             .populate('eventsHosting')
             .populate('eventsAttending')
-        res.render('events/index', { events: user.allEvents});
+        res.render('layout', { 
+            events: user.allEvents,
+            title: 'Events',
+            cssFile: 'events.css',
+            view: 'events/index'});
     } catch (err) {
         res.status(500).send('Error getting events.');
     }
 };
 
 exports.newEventForm = (req, res) => {
-    res.render('events/new');
+    res.render('layout', { 
+        title: 'New Event', 
+        cssFile: 'events.css', 
+        view: 'events/new' });
 };
 
 exports.createEvent = async (req, res) => {
@@ -41,7 +48,12 @@ exports.showEvent = async (req, res) => {
             .populate('user')
             .populate('guests')
             .populate('dishes');
-        res.render('events/show', { event });
+        res.render('layout', { 
+            event,
+            title: event.name,
+            cssFile: 'events.css',
+            view: 'events/show'
+         });
     } catch (err) {
         res.status(500).send('Error showing event.');
     }
@@ -50,7 +62,13 @@ exports.showEvent = async (req, res) => {
 exports.inviteToEvent = async (req, res) => {
     const event = await Event.findById(req.params.id);
     const user = await User.find();
-    res.render('events/invite', { event, contacts: user.connections });
+    res.render('layout', { 
+        event, 
+        contacts: user.connections,
+        title: 'Invite to Event',
+        cssFile: 'events.css',
+        view: 'events/invite'
+    });
 };
 
 exports.attendEvent = async (req, res) => {
@@ -77,7 +95,12 @@ exports.unattendEvent = async (req, res) => {
 
 exports.editEventForm = async (req, res) => {
     const event = await Event.findById(req.params.id);
-    res.render('events/edit', { event });
+    res.render('layout', { 
+        event,
+        title: 'Edit Event',
+        cssFile: 'events.css',
+        view: 'events/edit'        
+    });
 };
 
 exports.updateEvent = async (req, res) => {
