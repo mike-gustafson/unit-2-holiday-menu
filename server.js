@@ -4,6 +4,7 @@ const mongoose = require('mongoose');
 const passport = require('passport');
 const LocalStrategy = require('passport-local');
 const session = require('express-session');
+const MongoDBStore = require('connect-mongodb-session')(session);
 const methodOverride = require('method-override');
 const flash = require('connect-flash');
 
@@ -15,6 +16,12 @@ const passwordRoutes = require('./routes/passwordRoutes');
 const dishRoutes = require('./routes/dishRoutes');
 
 const app = express();
+const store = new MongoDBStore({
+  uri: process.env.MONGO_URI,
+  collection: 'sessions'
+});
+
+store.on('error', (err) => (console.error('Session store error:', err)));
 
 app.use(express.urlencoded({ extended: true }));
 // Database connection
@@ -24,6 +31,7 @@ mongoose.connect(process.env.MONGO_URI, {  })
 
 // Passport configuration
 app.use(session({ 
+  store: store,
   secret: 'secret', 
   resave: false, 
   saveUninitialized: true }
