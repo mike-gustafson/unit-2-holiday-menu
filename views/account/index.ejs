@@ -1,39 +1,13 @@
-
-    <div class="card account-index background-image rounded row height-full">
-      <div class="col s4 opacity-50-dark height-full">
-        <%- include('./index/_allEvents') %>
-        <%- include('./index/_navButtons') %> 
-      </div>
-      <div class="col s4 height-full">
-      </div>
-      <div class="col s4 opacity-50-dark height-full">
-        <h4>Your Dishes</h4>
-        <hr>
-        <% if (user.dishes.length> 0) { %>
-        <ul>
-          <% user.dishes.forEach(function(dish) { %>
-          <li>
-            <a href="/dishes/<%= dish._id %>"><%= dish.name %></a>
-          </li>
-          <% }) %>
-        </ul>
-        <% } else { %>
-        <p>You haven't added any dishes yet.</p>
-        <% } %>
-        <a href="/dishes/new" class="waves-effect waves-light btn">Add</a>
-        <hr>
-        <h4>Favorites</h4>
-        <% if (user.favoriteDishes.length> 0) { %>
-        <ul>
-          <% user.favoriteDishes.forEach(function(dish) { %>
-          <li>
-            <a href="/dishes/<%= dish._id %>"><%= dish.name %></a>
-          </li>
-          <% }) %>
-        </ul>
-        <% } else { %>
-        <p>No Favorite Dishes Yet</p>
-        <% } %>
-        <a href="/dishes/" class="waves-effect waves-light btn">Browse Dishes</a>
-        <hr>
-      </div>
+<div class="height-80">
+  <div class="card account-index background-image rounded row height-full">
+    <div class="col s4 opacity-50-dark height-full">
+      <%- include('./index/_allEvents') %>
+      <%- include('./index/_navButtons') %> 
+    </div>
+    <div class="col s4 height-full">
+    </div>
+    <div class="col s4 opacity-50-dark height-full">
+      <%- include('./index/_allDishes') %>
+    </div>
+  </div>
+</div>

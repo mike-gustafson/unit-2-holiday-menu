@@ -23,7 +23,11 @@ mongoose.connect(process.env.MONGO_URI, {  })
   .catch(err => console.log(err));
 
 // Passport configuration
-app.use(session({ secret: 'secret', resave: false, saveUninitialized: true }));
+app.use(session({ 
+  secret: 'secret', 
+  resave: false, 
+  saveUninitialized: true }
+));
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(flash());
@@ -66,6 +70,6 @@ app.get('/', (req, res) => {
 });
 
 // Start server
-app.listen(3003, () => {
-  console.log('Server running on http://localhost:3003');
+app.listen(process.env.PORT, () => {
+  console.log('Server running on port: ', process.env.PORT);
 });

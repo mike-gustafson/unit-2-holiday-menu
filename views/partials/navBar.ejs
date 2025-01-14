@@ -10,7 +10,16 @@
     </ul>
     <ul class="right hide-on-med-and-down">
       <li><a href="/account/profile"><i class="tooltipped material-icons right" data-tooltip="Profile">manage_accounts</i></a></li>
-      <li><a href="/logout"><i class="tooltipped material-icons right" data-tooltip="Logout">logout</i></a></li>
+      <li>
+        <form id="logout-form" action="/logout" method="POST" style="display: none;">
+          <button type="submit">Logout</button>
+        </form>
+        <a href="#" onclick="document.getElementById('logout-form').submit();">
+          <i class="tooltipped material-icons right" data-tooltip="Logout">
+            logout
+          </i>
+        </a>
+      </li>
     </ul> 
     <% } %>
   </div>

@@ -16,6 +16,9 @@
 .margin-0 {
     margin: 0;
 }
+.margin-5 {
+    margin: 5px;
+}
 .rounded {
     border-radius: 25px;
 }
