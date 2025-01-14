@@ -2,7 +2,10 @@ const crypto = require('crypto');
 const bcrypt = require('bcrypt');
 const nodemailer = require('nodemailer');
 const User = require('../models/user');
-const resetEmail = require('../utils/emails/resetEmail.html');
+const fs = require('fs');
+const path = require('path');
+
+const resetEmail = fs.readFileSync(path.join(__dirname, '../views/email/reset.html'), 'utf8');
 
 exports.requestForm = async (req, res) => {
     res.render('layout', {
