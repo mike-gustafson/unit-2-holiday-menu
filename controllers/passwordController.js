@@ -5,7 +5,7 @@ const User = require('../models/user');
 const fs = require('fs');
 const path = require('path');
 
-const resetEmail = fs.readFileSync(path.join(__dirname, '../views/email/reset.html'), 'utf8');
+const resetEmail = fs.readFileSync(path.join(__dirname, '../utils/emails/resetEmail.html'), 'utf8');
 
 exports.requestForm = async (req, res) => {
     res.render('layout', {
