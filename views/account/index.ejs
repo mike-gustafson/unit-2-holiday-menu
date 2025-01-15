@@ -9,14 +9,21 @@
           <%- include('../events/partials/_allEvents') %>
         </div>
         <div class="sidebar-nav">
-          <%- include('./index/_navButtons') %> 
+          <%- include('partials/_eventsNavButtons') %> 
         </div>
       </div>
     </div>
     <div class="col s4 height-full">
     </div>
     <div class="col s4 opacity-50-dark height-full">
-      <%- include('./index/_allDishes') %>
+      <div class="sidebar-container">
+        <div class="sidebar-content">
+          <%- include('../dishes/partials/_userDishes') %>
+        </div>
+        <div class="sidebar-nav">
+          <%- include('partials/_dishesNavButtons') %> 
+        </div>
+      </div>
     </div>
   </div>
 </div>

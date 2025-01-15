@@ -12,17 +12,21 @@ exports.home = async (req, res) => {
     .populate('favoriteDishes')
     .populate('eventsHosting')
     .populate('eventsAttending');
+    const userDishes = user.dishes;
+    const favoriteDishes = user.favoriteDishes;
     const events = user.allEvents;
     for (const event of events) {
       event.host = await User.findById(event.host);
       event.host = event.host.fullName;
     };
     res.render('layout', {
-      user: user,
-      events: events,
-    title: 'Home',
-    cssFile: 'account.css',
-    view: 'account/index'});
+      user,
+      events,
+      userDishes,
+      favoriteDishes,
+      title: 'Home',
+      cssFile: 'account.css',
+      view: 'account/index'});
   }
   catch (err) {
     console.error('Error getting user:', err);
