@@ -1,0 +1,7 @@
+@import url('sidebar.css');
+.dish-new, .dish-show, .dish-edit, .dishes-index {
+    background-image: url("../images/alyson-mcphee-yWG-ndhxvqY-unsplash.jpg");
+}
+.diet-description {
+    font-size: .8em;
+}

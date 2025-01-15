@@ -3,7 +3,7 @@ const router = express.Router();
 const eventController = require('../controllers/eventController');
 const { ensureAuthenticated } = require('../middleware/auth');
 
-router.get('/', eventController.getEvents);
+router.get('/', ensureAuthenticated, eventController.getEvents);
 router.get('/new', ensureAuthenticated, eventController.newEventForm);
 router.post('/', ensureAuthenticated, eventController.createEvent);
 router.get('/:id', eventController.showEvent);

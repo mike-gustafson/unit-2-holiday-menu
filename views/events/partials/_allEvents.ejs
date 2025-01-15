@@ -1,0 +1,24 @@
+<% if (events.length> 0) { %>  
+<hr class="margin-0">
+<% events.forEach(function(event) { %>
+<div class="col s3">
+  <div class="calendar-icon">
+    <div class="calendar-month">
+      <%= event.monthName %>
+    </div>
+    <div class="calendar-day">
+      <%= event.formattedDate.split('/')[1] %>
+    </div>
+  </div>
+</div>
+<div class="col s9">
+  <span class="event-title"><%= event.name %></span>
+  <br>
+  <span class="event-host">Host: <%= event.host.fullName %></span>
+</div>
+<a href="/events/<%= event._id %>" class="right-aligned-text">More Info</a>
+<hr class="margin-0">
+<% }) %>
+<% } else { %>
+<h4>No Events</h4>
+<% } %>

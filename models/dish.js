@@ -28,7 +28,7 @@ const dishSchema = new mongoose.Schema({
         type: String, 
         default: '' 
     },
-    dietaryAccommodations: { 
+    diets: { 
         type: [String], 
         default: [] 
     },

@@ -1,0 +1,95 @@
+<form action="/dishes/<%= dish._id %>?_method=PUT" method="POST" class="height-full sidebar-container">
+  <div class="sidebar-content">
+    <!-- Dish Name -->
+    <div class="input-field col s9">
+      <input type="text" name="name" id="name" value="<%= dish.name %>" required>
+      <label for="name" class="active">Dish Name</label>
+    </div>
+
+    <!-- Servings -->
+    <div class="input-field col s3">
+      <input type="number" name="servings" id="servings" value="<%= dish.servings %>" required>
+      <label for="servings" class="active">Servings</label>
+    </div>
+
+    <!-- Category (Radio Group) -->
+    <div class="radio-group col s10">
+      <% categories.forEach(function(category) { %>
+        <label>
+          <input 
+            type="radio" 
+            name="category" 
+            value="<%= category %>" 
+            <%= category === dish.category ? 'checked' : '' %>>
+          <span><%= category %></span>
+        </label>
+      <% }) %>
+    </div>
+
+    <!-- Description -->
+    <div class="input-field col s12">
+      <textarea name="description" id="description" class="materialize-textarea"><%= dish.description %></textarea>
+      <label for="description" class="active">Description</label>
+    </div>
+
+    <!-- Diets (Checkbox Group) -->
+    <div class="checkbox-group">
+      <% diets.forEach(diet => { %>
+        <label>
+          <input 
+            type="checkbox" 
+            name="diets[]" 
+            value="<%= diet.name %>" 
+            class="filled-in" 
+            <%= dish.diets.includes(diet.name) ? 'checked' : '' %>>
+          <span>
+            <%= diet.icon %>
+            <%= diet.name %>
+          </span><br>
+          <span class="col s12 diet-description">
+            <%= diet.description %>
+            <% if (diet.covers.some(c => c.isCovered)) { %>
+              <span>Also covers:</span>
+              <% diet.covers.forEach(c => { %>
+                <% if (c.isCovered) { %>
+                  <span><%= c.name %></span>
+                <% } %>
+              <% }) %>
+            <% } %>
+          </span>
+        </label>
+        <br>
+      <% }) %>
+    </div>
+  </div>
+
+  <div class="sidebar-nav">
+    <button class="btn waves-effect waves-light" type="submit">Save Changes</button>
+    <a href="/account" class="waves-effect waves-light btn">Back to Dashboard</a>
+    <button class="waves-effect waves-light btn red lighten-1" type="button" onclick="confirmAndDelete('/dishes/<%= dish._id %>?_method=DELETE')">
+      Delete
+    </button>
+  </div>
+</form>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const elems = document.querySelectorAll('select');
+    M.FormSelect.init(elems);
+  });
+
+  function confirmAndDelete(actionUrl) {
+    if (confirm('Are you sure you want to delete this dish? This action cannot be undone.')) {
+      const form = document.createElement('form');
+      form.method = 'POST';
+      form.action = actionUrl;
+      const methodInput = document.createElement('input');
+      methodInput.type = 'hidden';
+      methodInput.name = '_method';
+      methodInput.value = 'DELETE';
+      form.appendChild(methodInput);
+      document.body.appendChild(form);
+      form.submit();
+    }
+  }
+</script>

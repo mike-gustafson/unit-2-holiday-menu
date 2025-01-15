@@ -11,24 +11,24 @@
 </div>
 <hr>
 <div class="row dish-info">
-  <div class="col s3">
-    <span><%= dish.category.toUpperCase() %></span>
-  </div>
-  <div class="col s3">
-    <span class="bold">Servings:</span> <%= dish.servings %>
-  </div> 
   <div class="col s6">
+    <span class="bold">Type:</span> <%= dish.category.toUpperCase() %>
+  </div>
+  <div class="col s6">
+    <span class="bold">Servings:</span> <%= dish.servings %>
   </div>
 </div>
-<p class="description"><%= dish.description %></p>
+<span class="bold s12">Description:</span>
+<p class="description margin-0"><%= dish.description %></p>
+<hr>
 <div class="content-section">
   <span class="bold">Dietary Accommodations</span><br> 
-  <% if (dish.dietaryAccommodations.length > 1) { %>
-    <% dish.dietaryAccommodations.forEach(diet => { %> 
+  <% if (dish.diets.length > 1) { %>
+    <% dish.diets.forEach(diet => { %> 
     <span><%= diet %> | </span>
     <% }) %> 
   <% } else { %>
-    <% dish.dietaryAccommodations.forEach(diet => { %> 
+    <% dish.diets.forEach(diet => { %> 
     <span><%= diet %></span>
     <% }) %>
   <% } %>

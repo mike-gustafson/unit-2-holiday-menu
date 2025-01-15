@@ -1,4 +1,3 @@
-const e = require('connect-flash');
 const Event = require('../models/event');
 const User = require('../models/user');
 
@@ -42,22 +41,71 @@ exports.createEvent = async (req, res) => {
     }
 };
 
+exports.createEvent = async (req, res) => {
+    try {
+        const { name, date, time, location, description, capacity, status } = req.body;
+        const newEvent = {
+            name,
+            date: new Date(`${date}T${time}`),
+            time,
+            location: {
+                address: location.address,
+                city: location.city,
+                state: location.state,
+                zipCode: location.zipCode,
+                latitude: location.latitude || null,
+                longitude: location.longitude || null,
+            },
+            description,
+            capacity: capacity || 0,
+            status: status || 'Upcoming',
+            host: req.user.id,
+            guests: [
+                {
+                    userId: req.user.id,
+                    name: req.user.fullName,
+                    dish: req.user.dish || null,
+                    status: 'Attending',
+                },
+            ],
+        };
+        const event = new Event(newEvent);
+        await event.save();
+        const user = await User.findById(req.user.id);
+        user.eventsHosting.push(event._id);
+        user.eventsAttending.push(event._id);
+        await user.save();
+        res.redirect('/account');
+    } catch (err) {
+        console.error('Error creating event:', err);
+        res.status(500).send('Error creating event.');
+    }
+};
+
+
 exports.showEvent = async (req, res) => {
     try {
         const event = await Event.findById(req.params.id)
-            .populate('user')
-            .populate('guests')
-            .populate('dishes');
-        res.render('layout', { 
+            .populate('host');
+        if (!event) {
+            return res.status(404).send('Event not found.');
+        }
+        const userEventDetails = event.guests.find(guest => {
+                return guest.userId.id.toString() === req.user._id.toString();
+        });
+        res.render('layout', {
             event,
+            userEventDetails,
             title: event.name,
             cssFile: 'events.css',
             view: 'events/show'
-         });
+        });
     } catch (err) {
+        console.error('Error showing event:', err);
         res.status(500).send('Error showing event.');
     }
-}
+};
+
 
 exports.inviteToEvent = async (req, res) => {
     const event = await Event.findById(req.params.id);
@@ -105,8 +153,8 @@ exports.editEventForm = async (req, res) => {
 
 exports.updateEvent = async (req, res) => {
     try {
-        const { name, date } = req.body;
-        await Event.findByIdAndUpdate(req.params.id, { name, date });
+        const updatedEvent = req.body;
+        await Event.findByIdAndUpdate(req.params.id, updatedEvent);
         res.redirect('/events');
     }
     catch (err) {
@@ -117,7 +165,7 @@ exports.updateEvent = async (req, res) => {
 exports.deleteEvent = async (req, res) => {
     try {
         await Event.findByIdAndDelete(req.params.id);
-        res.redirect('/events');
+        res.redirect('/account');
     } catch (err) {
         res.status(500).send('Error deleting event.');
     }

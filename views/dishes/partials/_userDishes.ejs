@@ -1,0 +1,27 @@
+<h4 class="margin-0">Your Dishes</h4>
+<hr>
+<% if (userDishes.length > 0) { %>
+<ul>
+  <% userDishes.forEach(function(dish) { %>
+  <li>
+    <a href="/dishes/<%= dish.id %>"><%= dish.name %></a>
+  </li>
+  <% }) %>
+</ul>
+<% } else { %>
+<h6>You haven't added any dishes</h6>
+<% } %>
+<hr>
+<h4>Favorite Dishes</h4>
+<hr>
+<% if (favoriteDishes.length > 0) { %>
+<ul>
+  <% favoriteDishes.forEach(function(dish) { %>
+  <li>
+    <a href="/dishes/<%= dish.id %>"><%= dish.name %></a>
+  </li>
+  <% }) %>
+</ul>
+<% } else { %>
+  <h6>You don't have any favorites yet</h6>
+<% } %>

@@ -1,0 +1,82 @@
+<form action="/events" method="POST" class="height-full sidebar-container">
+  <div class="sidebar-content">
+
+    <!-- Event Name -->
+    <div class="input-field col s12">
+      <input type="text" name="name" id="name" value="New Event" required>
+      <label for="name">Event Name</label>
+    </div>
+
+    <!-- Event Date -->
+    <div class="input-field col s6">
+      <input type="date" name="date" id="date" required>
+      <label for="date">Date</label>
+    </div>
+
+    <!-- Event Time -->
+    <div class="input-field col s6">
+      <input type="time" name="time" id="time" required>
+      <label for="time">Time</label>
+    </div>
+
+    <!-- Location Fields -->
+    <div class="input-field col s12">
+      <input type="text" name="location[address]" id="location-address" required>
+      <label for="location-address">Address</label>
+    </div>
+    <div class="input-field col s6">
+      <input type="text" name="location[city]" id="location-city">
+      <label for="location-city">City</label>
+    </div>
+    <div class="input-field col s3">
+      <input type="text" name="location[state]" id="location-state" maxlength="2">
+      <label for="location-state">State</label>
+    </div>
+    <div class="input-field col s3">
+      <input type="text" name="location[zipCode]" id="location-zip" pattern="\d{5}" title="Enter a 5-digit ZIP code">
+      <label for="location-zip">ZIP</label>
+    </div>
+
+    <!-- Description -->
+    <div class="input-field col s12">
+      <textarea name="description" id="description" class="materialize-textarea"></textarea>
+      <label for="description">Description</label>
+    </div>
+
+    <!-- Capacity -->
+    <div class="input-field col s8">
+      <input type="number" name="capacity" id="capacity" min="0" step="1" value="0">
+      <label for="capacity">Capacity (0 = Unlimited)</label>
+    </div>
+
+    <!-- Event Status -->
+    <div class="input-field col s8">
+      <select name="status" id="status" required>
+        <option value="Upcoming" selected>Upcoming</option>
+        <option value="Completed">Completed</option>
+        <option value="Cancelled">Cancelled</option>
+      </select>
+      <label for="status">Status</label>
+    </div>
+  </div>
+
+  <div class="sidebar-nav">
+    <button class="btn waves-effect waves-light" type="submit">Create</button>
+    <a href="/account" class="waves-effect waves-light btn">Back</a>
+  </div>
+</form>
+
+<script>
+  const today = new Date().toISOString().split('T')[0];
+  document.getElementById('date').min = today;
+  document.getElementById('date').value = today;
+
+  const now = new Date();
+  const currentTime = now.toTimeString().slice(0, 5);
+  document.getElementById('time').value = currentTime;
+
+  document.addEventListener('DOMContentLoaded', function() {
+    const elems = document.querySelectorAll('select');
+    M.FormSelect.init(elems);
+  });
+</script>

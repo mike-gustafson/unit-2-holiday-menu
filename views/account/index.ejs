@@ -1,8 +1,17 @@
 <div class="height-80">
   <div class="card account-index background-image rounded row height-full">
     <div class="col s4 opacity-50-dark height-full">
-      <%- include('./index/_allEvents') %>
-      <%- include('./index/_navButtons') %> 
+      <div class="sidebar-container">
+        <div class="sidebar-header">
+          <h4 class="margin-5">Events</h4>
+        </div>
+        <div class="sidebar-content">
+          <%- include('../events/partials/_allEvents') %>
+        </div>
+        <div class="sidebar-nav">
+          <%- include('./index/_navButtons') %> 
+        </div>
+      </div>
     </div>
     <div class="col s4 height-full">
     </div>

@@ -1,0 +1,13 @@
+.event-title {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin: 0;
+    padding: 0;
+    width: calc(100% - .75rem)
+}
+.event-host {
+    font-size: .8rem;
+    font-weight: 400;
+    margin: 0;
+    padding: 0;
+}

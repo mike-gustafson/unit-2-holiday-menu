@@ -2,12 +2,7 @@ const Dish = require('../models/dish');
 const User = require('../models/user');
 
 const categories = require('../config/dishCategoryOptions');
-const dietaryAccommodations = require('../config/dishDietaryOptions');
-
-const parseDietaryAccommodations = (list) => {
-    if (!list) return [];
-    return list.split(',');
-};
+const diets = require('../config/diets');
 
 const parseUserName = async (dish) => {
     const dishCreator = await User.findById(dish.user);
@@ -19,13 +14,19 @@ const parseUserName = async (dish) => {
 
 exports.getDishes = async (req, res) => {
     try {
-        const dishes = await Dish.find();
-
         if (req.user) {
             const user = await User.findById(req.user.id);
-            const userDishes = dishes.filter(dish => dish.user.equals(user._id));
-            const otherDishes = dishes.filter(dish => !dish.user.equals(user._id));
-            res.render('dishes/index', { dishes: [], userDishes, otherDishes });
+            const userDishes = await Dish.find({ user: user._id });
+            const favoriteDishes = await Dish.find({ _id: { $in: user.favoriteDishes } });
+            const otherDishes = await Dish.find({ _id: { $nin: user.favoriteDishes.concat(user.dishes) } });
+            res.render('layout', { 
+                dishes: [], 
+                userDishes, 
+                favoriteDishes,
+                otherDishes,
+                title: 'Dishes',
+                cssFile: 'dishes.css',
+                view: 'dishes/index'});
         } else {
             return res.render('dishes/index', { dishes, userDishes: [], otherDishes: [] });
         }
@@ -40,14 +41,27 @@ exports.showDish = async (req, res) => {
         const user = await User.findById(req.user.id);
         const dishCreatorName = await parseUserName(dish);
         const isFavorite = user.favoriteDishes.includes(dish._id);
-        res.render('dishes/show', { dish, isFavorite, dishCreatorName });
+        res.render('layout', { 
+            dish, 
+            isFavorite, 
+            dishCreatorName,
+            title: dish.name,
+            cssFile: 'dishes.css',
+            view: 'dishes/show'
+        });
     } catch (err) {
         res.status(500).send('Error getting dish.');
     }
 }
 
 exports.newDishForm = (req, res) => {
-    res.render('dishes/new', { categories, dietaryAccommodations });
+    res.render('layout', { 
+        categories, 
+        diets,
+        title: 'New Dish',
+        cssFile: 'dishes.css',
+        view: 'dishes/new' 
+    });
 };
 
 exports.createDish = async (req, res) => {
@@ -55,17 +69,13 @@ exports.createDish = async (req, res) => {
         if (!req.user) {
             return res.status(401).send('Unauthorized. User not logged in.');
         }
-
-        let dietaryAccommodations = parseDietaryAccommodations(req.body.dietaryAccommodations);
-
         const newDish = {
             name: req.body.name.trim(),
             servings: parseInt(req.body.servings),
-            dietaryAccommodations: dietaryAccommodations || [],
+            diets: req.body.diets || [],
             category: req.body.category.trim().toLowerCase() || 'other',
             user: req.user._id,
-            description: req.body.description || null,
-            recipe: req.body.recipe || null
+            description: req.body.description || null
         };
         const dish = new Dish(newDish);
         await dish.save();
@@ -89,7 +99,14 @@ exports.editDishForm = async (req, res) => {
     if (dish.user != req.user.id) {
         return res.status(403).send('Unauthorized. User does not own this dish.');
     } else {
-        res.render('dishes/edit', { dish, categories, dietaryAccommodations });
+        res.render('layout', {
+            dish, 
+            categories, 
+            diets,
+            title: 'Edit Dish',
+            cssFile: 'dishes.css',
+            view: 'dishes/edit'
+        });
     }
 };
 
@@ -98,7 +115,7 @@ exports.updateDish = async (req, res) => {
         const updatedDish = {
             name: req.body.name,
             servings: req.body.servings,
-            dietaryAccommodations: req.body.dietaryAccommodations,
+            diets: req.body.diets,
             description: req.body.description,
             category: req.body.category
         }

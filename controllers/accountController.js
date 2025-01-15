@@ -14,8 +14,8 @@ exports.home = async (req, res) => {
     .populate('eventsAttending');
     const events = user.allEvents;
     for (const event of events) {
-      event.user = await User.findById(event.user);
-      event.host = event.user.fullName;
+      event.host = await User.findById(event.host);
+      event.host = event.host.fullName;
     };
     res.render('layout', {
       user: user,
@@ -46,8 +46,18 @@ exports.deleteConfirm = (req, res) => {
   res.render('account/deleteConfirm');
 };
 
-exports.profile = (req, res) => {
-  res.render('account/profile');
+exports.profile = async (req, res) => {
+  const user = await User.findById(req.user.id)
+  .populate('dishes')
+  .populate('eventsAttending')
+  .populate('eventsHosting')
+  .populate('favoriteDishes');
+  console.log(user);
+  res.render('layout', { 
+    cssFile: 'account.css',
+    title: 'Profile',
+    view: 'account/viewProfile'
+  });
 };
 
 exports.connections = (req, res) => {

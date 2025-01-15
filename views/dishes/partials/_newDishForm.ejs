@@ -1,0 +1,58 @@
+<form action="/dishes" method="POST" class="height-full sidebar-container">
+  <div class="sidebar-content">
+    <div class="input-field col s9">
+      <input type="text" name="name" id="name" required>
+      <label for="name">Dish Name</label>
+    </div>
+    <div class="input-field col s3">
+      <input type="number" name="servings" id="servings" required>
+      <label for="servings">Servings</label>
+    </div>
+    <div class="radio-group col s10">
+      <% categories.forEach(function(category) { %>
+        <label>
+          <input type="radio" name="category" value="<%= category %>" <%=category==='Other' ?'checked':'' %>>
+          <span>
+            <%= category %>
+          </span>
+        </label>
+        <% }) %>
+    </div>
+    <div class="input-field col s12">
+      <textarea name="description" id="description" class="materialize-textarea"></textarea>
+      <label for="description">Description</label>
+    </div>
+
+    <div class="checkbox-group">
+      <% diets.forEach(diet=> { %>
+        <label>
+          <input type="checkbox" name="diets" value="<%= diet.name %>" class="filled-in">
+          <span>
+            <%= diet.icon %>
+              <%= diet.name %>
+          </span><br>
+          <span class="col s12 diet-description">
+            <%= diet.description %>
+              <% if (diet.covers.some(c=> c.isCovered)) { %>
+                <span>Also covers:</span>
+                <% diet.covers.forEach(c=> { %>
+                  <% if (c.isCovered) { %>
+                    <span>
+                      <%= c.name %>
+                    </span>
+                    <% } %>
+                      <% }) %>
+                        <% } %>
+          </span>
+        </label>
+        <br>
+        <% }) %>
+    </div>
+
+  </div>
+
+  <div class="sidebar-nav">
+    <button class="btn waves-effect waves-light" type="submit">Create Dish</button>
+    <a href="/account" class="waves-effect waves-light btn">Back to Dashboard</a>
+  </div>
+</form>

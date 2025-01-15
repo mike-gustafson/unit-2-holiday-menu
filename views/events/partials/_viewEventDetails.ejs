@@ -1,0 +1,89 @@
+<div class="col s3">
+  <div class="calendar-icon">
+    <div class="calendar-month">
+      <%= event.monthName %>
+    </div>
+    <div class="calendar-day">
+      <%= event.formattedDate.split('/')[1] %>
+    </div>
+  </div>
+</div>
+<div class="col s9">
+  <h5><%= event.name %></h5> 
+  <span class="event-creator-name">Hosted By <%= event.hostName %></span>
+</div>
+<div class="row event-info">
+  <div class="col s2">
+    <span class="bold">Where:</span>
+  </div>
+  <div class="col s10">
+       <span><%= event.location.address %></span><br>
+        <span><%= event.location.city %>, <%= event.location.state %> <%= event.location.zipCode %></span>
+  </div>
+  <div class="col s2">
+    <span>Time:</span>
+  </div>
+  <div class="col s10">
+    <span><%= event.formattedTime %></span>
+  </div>
+</div>
+<hr>
+<div class="row event-description">
+  <div class="col s2">
+      <span>Info:</span>
+  </div>
+  <div class="col s10">
+      <span class="description"><%= event.description %></span>
+  </div>
+</div>
+<hr>
+<div class="row event-you">
+  <div class="col s2">
+      <span>You:</span>
+  </div>
+  <div class="col s10">
+    Status: <%= userEventDetails.status %>
+    <br>
+    Dish: 
+      <%= userEventDetails.dish.name %>
+  </div>
+  <div class="col s12">
+    <a href="/events/<%= event._id %>/rsvp" class="right-aligned-text">Update RSVP</a>
+  </div>
+</div>
+<hr>
+<div class="row event-guests">
+  <div class="col s2">
+    <ul>
+      <li>Attendees:</li>
+  </ul>
+  </div>
+  <div class="col s10">
+    <ul>
+      <% event.guests.forEach(function(guest) { %>
+        <% if (user.fullName !== guest.name) { %>
+          <% if (guest.status === 'Attending') { %>
+            <li><%= guest.name %> - <%= guest.dish?.name || 'No Dish Selected' %></li> 
+          <% } %>          
+        <% } %>
+      <% }) %>
+    </ul>
+  </div>
+</div>
+<hr>
+<div class="row event-invited">
+  <div class="col s2">
+    <ul>
+      <li>Invited:</li>
+    </ul>
+  </div>
+  <div class="col s10">
+    <ul>
+      <% event.guests.forEach(function(guest) { %>
+        <% if (guest.status !== 'Attending') { %>
+          <li><%= guest.name %></li>
+        <% } %>
+      <% }) %>
+    </ul>
+  </div>
+</div>

@@ -10,7 +10,7 @@ const userSchema = new mongoose.Schema({
   },
   firstName: { type: String, trim: true },
   lastName: { type: String, trim: true },
-  dietaryAccommodations: { type: [String] },
+  diet: { type: [String] },
   dishes: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Dish' }],
   favoriteDishes: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Dish' }],
   connections: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
