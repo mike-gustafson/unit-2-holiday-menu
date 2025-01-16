@@ -1,5 +1,6 @@
 const Event = require('../models/event');
 const User = require('../models/user');
+const Dish = require('../models/dish');
 
 exports.getEvents = async (req, res) => {
     try {
@@ -82,20 +83,35 @@ exports.createEvent = async (req, res) => {
     }
 };
 
-
 exports.showEvent = async (req, res) => {
     try {
         const event = await Event.findById(req.params.id)
-            .populate('host');
         if (!event) {
             return res.status(404).send('Event not found.');
+        }
+        const isInvited = event.guests.some(guest => {
+            return guest.userId.id.toString() === req.user.id;
+        });
+        if (!isInvited) {
+            return res.status(401).send('You are not invited to this event.');
         }
         const userEventDetails = event.guests.find(guest => {
                 return guest.userId.id.toString() === req.user._id.toString();
         });
+        const user =  await User.findById(req.user.id)
+            .populate('favoriteDishes')
+            .populate('dishes');
+        let dishes = Array.from(
+            new Map(
+                [...user.dishes, ...user.favoriteDishes].map(dish => [dish._id.toString(), dish])
+            ).values()
+        );
+        dishes = await Dish.populate(dishes, { path: 'user', select: '_id firstName lastName' });
+        console.log(dishes);
         res.render('layout', {
             event,
             userEventDetails,
+            dishes,
             title: event.name,
             cssFile: 'events.css',
             view: 'events/show'
@@ -118,28 +134,6 @@ exports.inviteToEvent = async (req, res) => {
         view: 'events/invite'
     });
 };
-
-exports.attendEvent = async (req, res) => {
-    try {
-        const event = await Event.findById(req.params.id);
-        event.guests.push(req.user._id);
-        await event.save();
-        res.redirect('/events');
-    } catch (err) {
-        res.status(500).send('Error attending event.');
-    }
-};
-
-exports.unattendEvent = async (req, res) => {
-    try {
-        const event = await Event.findById(req.params.id);
-        event.guests = event.guests.filter(guest => guest.toString() !== req.user._id.toString());
-        await event.save();
-        res.redirect('/events');
-    } catch (err) {
-        res.status(500).send('Error unattending event.');
-    }
-}
 
 exports.editEventForm = async (req, res) => {
     const event = await Event.findById(req.params.id);
@@ -170,3 +164,27 @@ exports.deleteEvent = async (req, res) => {
         res.status(500).send('Error deleting event.');
     }
 };
+
+exports.rsvp = async (req, res) => {
+    try {
+        const event = await Event.findById(req.params.id);
+        if (!event) {
+            return res.status(404).send('Event not found.');
+        };
+        const user = await User.findById(req.user.id);
+        if (!user) {
+            return res.status(404).send('User not found.');
+        }
+        const guest = event.guests.find(guest => guest.userId._id.toString() === req.user.id);
+        if (!guest) {
+            return res.status(404).send('Guest not found.');
+        }
+        guest.status = req.body.status;
+        const updatedDish = await Dish.findById(req.body.dish);
+        guest.dish = updatedDish._id;
+        await event.save();
+        res.redirect('/events/' + req.params.id);
+    } catch (err) {
+        res.status(500).send('Error updating RSVP.');
+    }
+}

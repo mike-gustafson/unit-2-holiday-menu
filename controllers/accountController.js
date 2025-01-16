@@ -1,5 +1,7 @@
-const event = require('../models/event');
 const User = require('../models/user');
+const diets = require('../config/diets');
+
+const cssFile = 'account.css';
 
 exports.home = async (req, res) => {
   try {
@@ -25,7 +27,7 @@ exports.home = async (req, res) => {
       userDishes,
       favoriteDishes,
       title: 'Home',
-      cssFile: 'account.css',
+      cssFile,
       view: 'account/index'});
   }
   catch (err) {
@@ -36,18 +38,35 @@ exports.home = async (req, res) => {
 
 exports.register = (req, res) => {
   res.render('layout', { 
-    cssFile: 'account.css',
+    cssFile,
     title: 'Register',
     view: 'account/register'
   });
 };
 
-exports.editForm = (req, res) => {
-  res.render('account/edit');
+exports.editForm = async (req, res) => {
+  const user = await User.findById(req.user.id)
+  .populate('dishes')
+  .populate('eventsAttending')
+  .populate('eventsHosting')
+  .populate('favoriteDishes');
+  res.render('layout', { 
+    diets,
+    user,
+    userDishes: user.dishes,
+    favoriteDishes: user.favoriteDishes,
+    cssFile,
+    title: user.fullName,
+    view: 'account/editProfile'
+  });
 };
 
 exports.deleteConfirm = (req, res) => {
-  res.render('account/deleteConfirm');
+  res.render('layout', {
+    title: 'Delete Account',
+    cssFile,
+    view: 'account/delete'
+  });
 };
 
 exports.profile = async (req, res) => {
@@ -56,26 +75,31 @@ exports.profile = async (req, res) => {
   .populate('eventsAttending')
   .populate('eventsHosting')
   .populate('favoriteDishes');
-  console.log(user);
+  const userDishes = user.dishes;
+  const favoriteDishes = user.favoriteDishes;
   res.render('layout', { 
-    cssFile: 'account.css',
+    userDishes,
+    favoriteDishes,
+    cssFile,
     title: 'Profile',
     view: 'account/viewProfile'
   });
 };
 
 exports.connections = (req, res) => {
-  res.render('account/connections');
+  res.render('layout', {
+    title: 'Connections',
+    cssFile,
+    view: 'account/connections'
+  });
 };
 
 exports.delete = async (req, res) => {
-  req.body.email = req.body.email.toLowerCase();
-  if ((req.user.id === req.params.id) && req.user.email === req.body.email) {
+  if (req.user.id === req.params.id) {
     try {
       await User.findByIdAndDelete(req.params.id);
       req.logout((err) => {
         if (err) {
-          console.error('Error during logout:', err);
           return res.status(500).send('Error during logout.');
         }
       })
@@ -90,31 +114,39 @@ exports.delete = async (req, res) => {
 
 exports.addFavorite = async (req, res) => {
   try {
-    const userId = req.user._id;
-    const user = await User.findById(userId)
-    .populate('dishes');
-    const dishId = req.body.dishId;
-    user.favoriteDishes.push(dishId);
-    await user.save();
-    res.redirect('/dishes/' + dishId);
+    req.user.favoriteDishes.push(req.body.dishId);
+    await User.findByIdAndUpdate(req.user._id, req.user);
+    res.redirect('/dishes/' + req.body.dishId);
   }
   catch (err) {
-    console.error('Error adding favorite:', err);
     return res.status(500).send('Error adding favorite.');
   }
 }
 
 exports.removeFavorite = async (req, res) => {
   try {
-    const userId = req.user._id;
-    const user = await User.findById(userId);
-    const dishId = req.body.dishId;
-    user.favoriteDishes = user.favoriteDishes.filter(id => id != dishId);
+    const user = await User.findById(req.user._id);
+    user.favoriteDishes = user.favoriteDishes.filter(id => id != req.body.dishId);
     await user.save();
-    res.redirect('/dishes/' + dishId);
+    res.redirect('/dishes/' + req.body.dishId);
   }
   catch (err) {
-    console.error('Error removing favorite:', err);
     return res.status(500).send('Error removing favorite.');
+  }
+}
+
+exports.update = async (req, res) => {
+  try {
+    const updatedUser = {
+      firstName: req.body.firstName,
+      lastName: req.body.lastName,
+      email: req.body.email.toLowerCase(),
+      diet: req.body.diet,
+    }
+    await User.findByIdAndUpdate(req.user._id, updatedUser);
+    res.redirect('/account/profile');
+  }
+  catch (err) {
+    res.status(500).send('Error updating user.');
   }
 }

@@ -38,17 +38,26 @@
 </div>
 <hr>
 <div class="row event-you">
-  <div class="col s2">
-      <span>You:</span>
-  </div>
   <div class="col s10">
-    Status: <%= userEventDetails.status %>
-    <br>
-    Dish: 
-      <%= userEventDetails.dish.name %>
-  </div>
-  <div class="col s12">
-    <a href="/events/<%= event._id %>/rsvp" class="right-aligned-text">Update RSVP</a>
+    <form action="/events/<%= event.id %>/rsvp/?_method=PUT" method="post">
+      <div class="input-field">
+          <select name="status">
+              <option value="Attending" <%= userEventDetails.status === 'Attending' ? 'selected' : '' %>>Attending</option>
+              <option value="Not Attending" <%= userEventDetails.status === 'Not Attending' ? 'selected' : '' %>>Not Attending</option>
+              <option value="Maybe" <%= userEventDetails.status === 'Maybe' ? 'selected' : '' %>>Maybe</option>
+          </select>
+          <label for="status">Your RSVP</label>
+      </div>
+      <div class="input-field">
+          <select name="dish">
+              <% dishes.forEach(function(dish) { %>
+                  <option value="<%= dish._id %>" <%= userEventDetails.dish._id.toString() === dish._id.toString() ? 'selected' : '' %>><%= dish.name %></option>
+              <% }) %>
+          </select>
+          <label for="dish">Your Dish</label>
+      </div>
+      <button class="btn-small waves-effect waves-light" type="submit">Update</button>
+  </form>
   </div>
 </div>
 <hr>
@@ -87,3 +96,11 @@
     </ul>
   </div>
 </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const elems = document.querySelectorAll('select');
+    M.FormSelect.init(elems);
+});
+
+</script>

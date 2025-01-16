@@ -1,5 +1,14 @@
 <% if (user && (user.id == dish.user)) { %>
 <a href="/dishes/<%= dish.id %>/edit" class="waves-effect waves-light btn">Edit</a>
+<% } else { %>
+<form action="/dishes" method="POST">
+    <input type="hidden" name="name" value="<%= dish.name %>">
+    <input type="hidden" name="servings" value="<%= dish.servings %>">
+    <input type="hidden" name="description" value="<%= dish.description %>">
+    <input type="hidden" name="dietaryAccommodations" value="<%= dish.diets %>">
+    <input type="hidden" name="category" value="<%= dish.category %>">
+    <button class="btn waves-effect waves-light" type="submit">Add to My Dishes</button>
+</form>
 <% } %>
 <a href="/account" class="waves-effect waves-light btn">Home</a>
 <a href="/dishes" class="waves-effect waves-light btn">All Dishes</a>

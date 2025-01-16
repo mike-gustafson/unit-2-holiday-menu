@@ -1,0 +1,48 @@
+<form action="/account/update?_method=PUT" method="POST" class="height-full sidebar-container">
+    <div class="sidebar-content">
+      <!-- Email -->
+      <div class="input-field col s12">
+        <input type="email" name="email" id="email" value="<%= user.email %>" required>
+        <label for="email" class="active">Email</label>
+      </div>
+  
+      <!-- First Name -->
+      <div class="input-field col s6">
+        <input type="text" name="firstName" id="firstName" value="<%= user.firstName %>" required>
+        <label for="firstName" class="active">First Name</label>
+      </div>
+  
+      <!-- Last Name -->
+      <div class="input-field col s6">
+        <input type="text" name="lastName" id="lastName" value="<%= user.lastName %>" required>
+        <label for="lastName" class="active">Last Name</label>
+      </div>
+  
+    <!-- Diet Preferences -->
+    <div class="input-field col s12">
+        <select name="diet[]" id="diet" multiple>
+          <% diets.forEach(function(diet) { %>
+            <option value="<%= diet.name %>" <%= (user.diet || []).includes(diet.name) ? 'selected' : '' %>><%= diet.icon %> <%= diet.name %></option>
+          <% }) %>
+        </select>
+        <label for="diet" class="active">Diet Preferences</label>
+      </div>
+    </div>
+  
+    <div class="sidebar-nav">
+      <!-- Save Changes Button -->
+      <button class="btn waves-effect waves-light" type="submit">Save Changes</button>
+  
+      <!-- Cancel Button -->
+      <a href="/account" class="waves-effect waves-light btn">Cancel</a>
+    </div>
+  </form>
+  
+  <script>
+document.addEventListener('DOMContentLoaded', function () {
+  const elems = document.querySelectorAll('select');
+  M.FormSelect.init(elems);
+});
+
+  </script>
+  

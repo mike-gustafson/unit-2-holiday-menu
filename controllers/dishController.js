@@ -4,13 +4,7 @@ const User = require('../models/user');
 const categories = require('../config/dishCategoryOptions');
 const diets = require('../config/diets');
 
-const parseUserName = async (dish) => {
-    const dishCreator = await User.findById(dish.user);
-    const firstName = dishCreator.firstName.slice(0, 1).toUpperCase();
-    const lastName = dishCreator.lastName;
-    const creatorName = firstName + '. ' + lastName;
-    return creatorName;
-};
+
 
 exports.getDishes = async (req, res) => {
     try {
@@ -39,8 +33,8 @@ exports.showDish = async (req, res) => {
     try {
         const dish = await Dish.findById(req.params.id);
         const user = await User.findById(req.user.id);
-        const dishCreatorName = await parseUserName(dish);
         const isFavorite = user.favoriteDishes.includes(dish._id);
+        const dishCreatorName = await dish.getCreator();
         res.render('layout', { 
             dish, 
             isFavorite, 
@@ -78,6 +72,15 @@ exports.createDish = async (req, res) => {
             description: req.body.description || null
         };
         const dish = new Dish(newDish);
+        const existingDish = await Dish.findOne({
+            name: dish.name,
+            servings: dish.servings,
+            category: dish.category,
+            description: dish.description
+        });
+        if (existingDish) {
+            return res.status(400).send('An identical dish already exists.');
+        }
         await dish.save();
 
         const user = await User.findById(req.user._id);

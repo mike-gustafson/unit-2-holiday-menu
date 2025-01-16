@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const User = require('./user');
 
 const dishSchema = new mongoose.Schema({
     name: { 
@@ -37,7 +38,14 @@ const dishSchema = new mongoose.Schema({
         ref: 'User',
         index: true,
         required: true
-    },
+    }
 }, { timestamps: true });
+
+dishSchema.methods.getCreator = async function () {
+    const user = await User.findById(this.user);
+    return user ? user.fullName : 'Unknown User';
+};
+
+dishSchema.index({ name: 1, servings: 1, category: 1, description: 1 }, { unique: true });
 
 module.exports = mongoose.model('Dish', dishSchema);

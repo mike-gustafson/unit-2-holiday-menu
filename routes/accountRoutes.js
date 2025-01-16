@@ -11,6 +11,7 @@ router.get(   '/profile',        ensureAuthenticated, controller.profile);
 router.get(   '/connections',    ensureAuthenticated, controller.connections);
 router.post(  '/addFavorite',    ensureAuthenticated, controller.addFavorite);
 router.post(  '/removeFavorite', ensureAuthenticated, controller.removeFavorite);
+router.put(   '/update',         ensureAuthenticated, controller.update);
 router.delete('/:id',            ensureAuthenticated, controller.delete);
 
 module.exports = router;

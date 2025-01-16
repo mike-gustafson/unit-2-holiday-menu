@@ -6,11 +6,24 @@
           <%- include('./partials/_viewEventDetails') %>
         </div>
         <div class="sidebar-nav">
-          <%- include('./show/_navButtons') %>
+          <%- include('./partials/_viewEventNavButtons') %>
         </div>
       </div>
     </div>
-    <div class="col s8 height-full">
+    <div class="col s4 height-full">
+    </div>
+    <div class="col s4 <% if (event.host._id.toString() === user._id.toString()) { %>opacity-50-dark<% } %> height-full">
+      
+      <div class="sidebar-container">
+        <div class="sidebar-content">
+          <% if (event.host._id.toString() === user._id.toString()) { %>
+            This is your event. You can edit it <a href="/events/<%= event.id %>/edit">here</a>.
+           <% } %>
+        </div>
+        <div class="sidebar-nav">
+          You've have some action buttons here
+        </div>
+      </div>
     </div>
   </div>
 </div>
