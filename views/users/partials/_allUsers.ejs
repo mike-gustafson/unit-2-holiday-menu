@@ -1,0 +1,13 @@
+<% if (users.length> 0) { %>  
+<hr class="margin-0">
+<% users.forEach(function(user) { %>
+<div class="col s12">
+  <div class="user-link">
+    <a href="/users/<%= user._id.toString() %>"><%= user.fullName %></a>
+    <hr>
+  </div>
+</div>
+<% }) %>
+<% } else { %>
+<h4>No Users</h4>
+<% } %>

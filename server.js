@@ -10,9 +10,10 @@ const flash = require('connect-flash');
 
 const User = require('./models/user');
 const authRoutes = require('./routes/authRoutes');
+const dishRoutes = require('./routes/dishRoutes');
+const usersRoutes = require('./routes/usersRoutes');
 const eventRoutes = require('./routes/eventRoutes');
 const accountRoutes = require('./routes/accountRoutes');
-const dishRoutes = require('./routes/dishRoutes');
 
 const app = express();
 const store = new MongoDBStore({
@@ -64,6 +65,7 @@ app.set('view engine', 'ejs');
 // Routes
 app.use(authRoutes);
 app.use('/dishes', dishRoutes);
+app.use('/users', usersRoutes);
 app.use('/events', eventRoutes);
 app.use('/account', accountRoutes);
 
