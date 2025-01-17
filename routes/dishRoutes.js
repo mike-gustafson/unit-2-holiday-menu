@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const dishController = require('../controllers/dishController');
-const { ensureAuthenticated } = require('../middleware/auth');
+const { ensureAuthenticated } = require('../utils/middleware/auth');
 
 router.get('/', dishController.getDishes);
 router.get('/new', ensureAuthenticated, dishController.newDishForm);

@@ -98,6 +98,9 @@ exports.showEvent = async (req, res) => {
         const userEventDetails = event.guests.find(guest => {
                 return guest.userId.id.toString() === req.user._id.toString();
         });
+        if (userEventDetails.dish === null) {
+            userEventDetails.dish = { name: 'No dish selected' };
+        }
         const user =  await User.findById(req.user.id)
             .populate('favoriteDishes')
             .populate('dishes');

@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const controller = require('../controllers/accountController');
-const { ensureAuthenticated } = require('../middleware/auth');
+const { ensureAuthenticated } = require('../utils/middleware/auth');
 
 router.get(   '/',                                    controller.home);
 router.get(   '/edit',           ensureAuthenticated, controller.editForm);

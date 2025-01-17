@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const controller = require('../controllers/eventController');
-const { ensureAuthenticated } = require('../middleware/auth');
+const { ensureAuthenticated } = require('../utils/middleware/auth');
 
 router.get('/', ensureAuthenticated, controller.getEvents);
 router.get('/new', ensureAuthenticated, controller.newEventForm);
