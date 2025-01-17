@@ -12,7 +12,6 @@ const User = require('./models/user');
 const authRoutes = require('./routes/authRoutes');
 const eventRoutes = require('./routes/eventRoutes');
 const accountRoutes = require('./routes/accountRoutes');
-const passwordRoutes = require('./routes/passwordRoutes');
 const dishRoutes = require('./routes/dishRoutes');
 
 const app = express();
@@ -67,7 +66,6 @@ app.use(authRoutes);
 app.use('/dishes', dishRoutes);
 app.use('/events', eventRoutes);
 app.use('/account', accountRoutes);
-app.use('/password', passwordRoutes);
 
 app.get('/', (req, res) => {
   res.render('layout', { 

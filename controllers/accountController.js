@@ -1,5 +1,5 @@
 const User = require('../models/user');
-const diets = require('../config/diets');
+const diets = require('../utils/data/diets');
 
 const cssFile = 'account.css';
 
@@ -34,14 +34,6 @@ exports.home = async (req, res) => {
     console.error('Error getting user:', err);
     res.redirect('/');
   }
-};
-
-exports.register = (req, res) => {
-  res.render('layout', { 
-    cssFile,
-    title: 'Register',
-    view: 'account/register'
-  });
 };
 
 exports.editForm = async (req, res) => {

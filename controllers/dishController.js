@@ -1,8 +1,8 @@
 const Dish = require('../models/dish');
 const User = require('../models/user');
 
-const categories = require('../config/dishCategoryOptions');
-const diets = require('../config/diets');
+const categories = require('../utils/data/dishCategoryOptions');
+const diets = require('../utils/data/diets');
 
 
 

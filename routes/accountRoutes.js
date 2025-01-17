@@ -4,7 +4,6 @@ const controller = require('../controllers/accountController');
 const { ensureAuthenticated } = require('../middleware/auth');
 
 router.get(   '/',                                    controller.home);
-router.get(   '/register',                            controller.register);
 router.get(   '/edit',           ensureAuthenticated, controller.editForm);
 router.get(   '/delete',         ensureAuthenticated, controller.deleteConfirm);
 router.get(   '/profile',        ensureAuthenticated, controller.profile);
