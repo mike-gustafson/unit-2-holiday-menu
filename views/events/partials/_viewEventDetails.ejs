@@ -50,9 +50,11 @@
       </div>
       <div class="input-field">
           <select name="dish">
+              <option value="" disabled selected>Choose your dish</option>
               <% dishes.forEach(function(dish) { %>
                   <option value="<%= dish._id %>" <%= userEventDetails.dish._id.toString() === dish._id.toString() ? 'selected' : '' %>><%= dish.name %></option>
               <% }) %>
+
           </select>
           <label for="dish">Your Dish</label>
       </div>
