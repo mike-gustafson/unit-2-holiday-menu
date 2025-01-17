@@ -149,7 +149,7 @@ exports.updateEvent = async (req, res) => {
     try {
         const updatedEvent = req.body;
         await Event.findByIdAndUpdate(req.params.id, updatedEvent);
-        res.redirect('/events');
+        res.redirect('/events/' + req.params.id);
     }
     catch (err) {
         res.status(500).send('Error updating event.');

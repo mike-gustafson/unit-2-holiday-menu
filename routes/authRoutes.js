@@ -8,6 +8,7 @@ router.post('/login',                 controller.login);
 router.post('/logout',                controller.logout);
 router.get( '/password/reset',        controller.requestPasswordResetForm);
 router.post('/password/reset',        controller.sendPasswordResetEmail);
+router.get( '/password/reset-sent',   controller.passwordResetSent);
 router.get( '/password/reset/:token', controller.setNewPasswordForm);
 router.post('/password/reset/:token', controller.setNewPassword);
 

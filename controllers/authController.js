@@ -22,14 +22,6 @@ async function sendEmail(mailOptions) {
   return transporter.sendMail(mailOptions);
 }
 
-async function verifyEmailIsUnique(email) {
-  const user = await User.findOne({ email });
-  if (user) {
-    req.flash('error', 'An account with that email already exists.');
-    res.redirect('/signupForm');
-  }
-}
-
 exports.signupForm = (req, res) => {
   res.render('layout', {
     cssFile: 'account.css',
@@ -45,7 +37,12 @@ exports.signup = async (req, res) => {
       firstName: req.body.firstName.trim(),
       lastName: req.body.lastName.trim(),
     });
-    await verifyEmailIsUnique(user.email);
+    const email = user.email;
+    const existingUser = await User.findOne({ email });
+    if (existingUser) {
+      req.flash('error', 'An account with that email already exists.');
+      return res.redirect('/signup');
+    }
     await User.register(user, req.body.password);
     req.flash('success', 'Registration successful! You can now log in.');
     res.redirect('/');
@@ -85,7 +82,6 @@ exports.logout = (req, res, next) => {
     req.session.destroy((err) => {
       if (err) return next(err);
       res.clearCookie('connect.sid');
-      req.flash('success', 'You have been logged out.');
       res.redirect('/');
     });
   });
@@ -120,13 +116,21 @@ exports.sendPasswordResetEmail = async (req, res) => {
       html,
     });
     req.flash('success', 'Password reset email sent. Check your inbox.');
-    res.redirect('/');
+    res.redirect('/password/reset-sent');
   } catch (err) {
     console.error('Error sending reset email:', err);
     req.flash('error', 'An error occurred. Please try again.');
     res.redirect('/password/reset');
   }
 };
+
+exports.passwordResetSent = (req, res) => {
+  res.render('layout', {
+    title: 'Reset Password',
+    cssFile: 'account.css',
+    view: 'passwordReset/sent',
+  });
+}
 
 exports.setNewPasswordForm = (req, res) => {
   res.render('layout', {
