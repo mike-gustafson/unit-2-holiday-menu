@@ -1,23 +1,23 @@
-E-Mail: <%= user.email %>
+<span class="title">E-Mail:</span> <%= user.email %>
 <br>
-Your Diet: 
+<span class="title">Diet: </span>
 <% user.diet.forEach(diet => { %>
     <span><%= diet %></span>    
 <% }) %>
 <br>
-Your Connections:
+<span class="title">Connections:</span>
 <% user.connections.forEach(connection => { %>
     <span><%= connection.fullName %></span>
 <% }) %>
 <br>
-Your Past Events:
+<span class="title">Past Events:</span>
 <% user.eventsAttending.forEach(event => { %>
     <% if (event.isPast) { %>
         <a href="/events/<%= event.id %>"><%= event.name %></a>
     <% } %>
 <% }) %>
 <br>
-Your Upcoming Events:
+<span class="title">Upcoming Events:</span>
 <% user.eventsAttending.forEach(event => { %>
     <% if (!event.isPast) { %>
         <a href="/events/<%= event.id %>"><%= event.name %></a>

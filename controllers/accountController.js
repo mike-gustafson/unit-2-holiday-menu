@@ -1,4 +1,5 @@
 const User = require('../models/user');
+const Dish = require('../models/dish');
 const diets = require('../utils/data/diets');
 
 const cssFile = 'account.css';
@@ -13,9 +14,15 @@ exports.home = async (req, res) => {
     .populate('dishes')
     .populate('favoriteDishes')
     .populate('eventsHosting')
-    .populate('eventsAttending');
+    .populate('eventsAttending')
+    .populate('connections');
     const userDishes = user.dishes;
     const favoriteDishes = user.favoriteDishes;
+    const friendsDishes = [];
+    for (const friend of user.connections) {
+      const friendDishes = await Dish.find({ _id: { $in: friend.dishes } }).populate('user');
+      friendsDishes.push(...friendDishes);
+    }
     const events = user.allEvents;
     for (const event of events) {
       event.host = await User.findById(event.host);
@@ -26,8 +33,9 @@ exports.home = async (req, res) => {
       events,
       userDishes,
       favoriteDishes,
+      friendsDishes,
       title: 'Home',
-      cssFile,
+      cssFile: 'account.css',
       view: 'account/index'});
   }
   catch (err) {

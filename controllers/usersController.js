@@ -1,4 +1,5 @@
 const User = require('../models/user');
+const Dish = require('../models/dish');
 
 exports.main = async (req, res) => {
     try {
@@ -32,9 +33,15 @@ exports.showUser = async (req, res) => {
         const user = await User.findById(req.params.id)
             .populate('connections')
             .populate('dishes')
-            .populate('favoriteDishes');
+            .populate('favoriteDishes')
+            .populate('connections');
         const userDishes = user.dishes;
         const favoriteDishes = user.favoriteDishes;
+        const friendsDishes = [];
+        for (const friend of user.connections) {
+          const friendDishes = await Dish.find({ _id: { $in: friend.dishes } }).populate('user');
+          friendsDishes.push(...friendDishes);
+        }
         console.log(user);
         if (!user) {
             res.status(404).send('User not found.');
@@ -44,6 +51,7 @@ exports.showUser = async (req, res) => {
             user,
             userDishes,
             favoriteDishes,
+            friendsDishes,
             title: 'User',
             cssFile: 'users.css',
             view: 'users/show'

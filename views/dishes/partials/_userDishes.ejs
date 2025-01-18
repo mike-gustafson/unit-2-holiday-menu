@@ -1,4 +1,4 @@
-<h4 class="margin-0">Your Dishes</h4>
+<h4 class="margin-0"><%= user.firstName %>s Dishes</h4>
 <hr>
 <% if (userDishes.length > 0) { %>
 <ul>
@@ -12,6 +12,18 @@
 <h6>You haven't added any dishes</h6>
 <% } %>
 <hr>
+<% if (friendsDishes.length > 0) { %>
+<h4>Friends Dishes</h4>
+<hr>
+<ul>
+  <% friendsDishes.forEach(function(dish) { %>
+  <li>
+    <a href="/dishes/<%= dish.id %>"><%= dish.name %></a> <a href="/users/<%= dish.user._id %>" class="right dish-user-name">from <%= dish.user.fullName %></a>
+  </li>
+  <% }) %>
+</ul>
+<hr>
+<% } %>
 <h4>Favorite Dishes</h4>
 <hr>
 <% if (favoriteDishes.length > 0) { %>
