@@ -2,10 +2,21 @@ const User = require('../models/user');
 
 exports.main = async (req, res) => {
     try {
-        const users = await User.find( {} , { firstName: 1, lastName:1 } );
+        const users = await User.find( {} , { firstName: 1, lastName:1, connections:1 } );
+        const currentUser = await User.findById(req.user.id, { connections: 1 });
+        const usersWithMutuals = users.map(person => {
+            const mutualFriends = currentUser.connections.filter(friendId =>
+              person.connections.includes(friendId)
+            );
+            return {
+            ...person.toObject(),
+            mutualFriendsCount: mutualFriends.length,
+          };
+        });
+        console.log(usersWithMutuals);
         res.render('layout', { 
             title: 'Users',
-            users,
+            users: usersWithMutuals,
             cssFile: 'users.css',
             view: 'users/index'
         });
@@ -43,3 +54,37 @@ exports.showUser = async (req, res) => {
         res.status(500).send('Error showing user.');
     }
 };
+
+exports.addConnection = async (req, res) => {
+    try {
+        const user = await User.findById(req.user.id, { connections: 1 });
+        if (user.connections.includes(req.params.id)) {
+            res.status(400).send('Connection already exists.');
+            return;
+        }
+        user.connections.push(req.params.id);
+        await user.save();
+        res.redirect(`/users/`);
+    }
+    catch (err) {
+        console.error('Error adding connection:', err);
+        res.status(500).send('Error adding connection.');
+    }
+}
+
+exports.removeConnection = async (req, res) => {
+    try {
+        const user = await User.findById(req.user.id, { connections: 1 });
+        if (!user.connections.includes(req.params.id)) {
+            res.status(400).send('Connection does not exist.');
+            return;
+        }
+        user.connections = user.connections.filter(id => id != req.params.id);
+        await user.save();
+        res.redirect(`/users/`);
+    }
+    catch (err) {
+        console.error('Error removing connection:', err);
+        res.status(500).send('Error removing connection.');
+    }
+}

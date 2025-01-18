@@ -1,13 +1,43 @@
 <% if (users.length> 0) { %>  
 <hr class="margin-0">
-<% users.forEach(function(user) { %>
-<div class="col s12">
-  <div class="user-link">
-    <a href="/users/<%= user._id.toString() %>"><%= user.fullName %></a>
-    <hr>
+<% users.forEach(function(person) { %>
+<% if (person._id.toString() !== user._id.toString() ) { %>
+<div class="col s12 person-tile">
+  <div class="col s2">
+    <img src="https://ui-avatars.com/api/?name=<%= person.firstName %>+<%= person.lastName %>&size=48&rounded=true" alt="User Photo">
   </div>
+  <div class="col s10">
+    <div class="col s12">
+      <a href="/users/<%= person._id %>">
+        <span><%= person.firstName %> <%= person.lastName %></span>
+      </a>
+    </div>
+    <div class="col s12">
+      <% if (user.connections.includes(person._id))  { %>
+      <form action="/users/<%= person._id %>/remove" method="POST" style="display: inline;">
+        <a href="#" onclick="this.closest('form').submit(); return false;">
+          <i class="material-icons right">person_remove</i>
+        </a>
+      </form>
+      <% } else { %>
+      <form id="add-friend-form" action="/users/<%= person._id %>/add" method="POST" style="display: inline;">
+        <% if (person.mutualFriendsCount > 0) { %>
+          <span><%= person.mutualFriendsCount %> mutual friends</span>
+        <% } %>
+        <a href="#" onclick="document.getElementById('add-friend-form').submit(); return false;">
+          <i class="material-icons right">person_add</i>
+        </a>
+      </form>
+      <% } %>  
+    </div>
+  </div>  
 </div>
+<% } %>
 <% }) %>
 <% } else { %>
 <h4>No Users</h4>
 <% } %>
+
+<script>
+  window.ejsData = <%- JSON.stringify(locals) %>;
+</script>
