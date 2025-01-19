@@ -125,7 +125,6 @@ exports.showEvent = async (req, res) => {
     }
 };
 
-
 exports.inviteToEvent = async (req, res) => {
     const event = await Event.findById(req.params.id);
     const user = await User.find();

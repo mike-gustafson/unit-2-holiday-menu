@@ -1,37 +1,25 @@
 const User = require('../models/user');
-const Dish = require('../models/dish');
+
 const diets = require('../utils/data/diets');
 
 const cssFile = 'account.css';
 
+const fetchAllEvents = require('../utils/middleware/fetchAllEvents');
+const fetchFriendsDishes = require('../utils/middleware/fetchFriendsDishes');
+const fetchUserWithPopulates = require('../utils/middleware/fetchUserWithPopulates');
+const fetchFavoriteDishes = require('../utils/middleware/fetchFavoriteDishes');
+
 exports.home = async (req, res) => {
   try {
-    if (!req.user) {
-      return res.redirect('/');
-    }
-    const userId = req.user.id;
-    const user = await User.findById(userId)
-    .populate('dishes')
-    .populate('favoriteDishes')
-    .populate('eventsHosting')
-    .populate('eventsAttending')
-    .populate('connections');
-    const userDishes = user.dishes;
-    const favoriteDishes = user.favoriteDishes;
-    const friendsDishes = [];
-    for (const friend of user.connections) {
-      const friendDishes = await Dish.find({ _id: { $in: friend.dishes } }).populate('user');
-      friendsDishes.push(...friendDishes);
-    }
-    const events = user.allEvents;
-    for (const event of events) {
-      event.host = await User.findById(event.host);
-      event.host = event.host.fullName;
-    };
+    const populateArray = ['dishes', 'eventsHosting', 'eventsAttending', 'connections'];
+    const user = await fetchUserWithPopulates(req.user.id, populateArray);
+    const favoriteDishes = await fetchFavoriteDishes(user);
+    const friendsDishes = await fetchFriendsDishes(user);
+    const events = await fetchAllEvents(user);
     res.render('layout', {
       user,
       events,
-      userDishes,
+      userDishes: user.dishes,
       favoriteDishes,
       friendsDishes,
       title: 'Home',
@@ -45,11 +33,8 @@ exports.home = async (req, res) => {
 };
 
 exports.editForm = async (req, res) => {
-  const user = await User.findById(req.user.id)
-  .populate('dishes')
-  .populate('eventsAttending')
-  .populate('eventsHosting')
-  .populate('favoriteDishes');
+  const populates = ['dishes', 'favoriteDishes', 'eventsHosting', 'eventsAttending'];
+  const user = fetchUserWithPopulates(req.user.id, populates);
   res.render('layout', { 
     diets,
     user,
@@ -70,16 +55,15 @@ exports.deleteConfirm = (req, res) => {
 };
 
 exports.profile = async (req, res) => {
-  const user = await User.findById(req.user.id)
-  .populate('dishes')
-  .populate('eventsAttending')
-  .populate('eventsHosting')
-  .populate('favoriteDishes');
-  const userDishes = user.dishes;
-  const favoriteDishes = user.favoriteDishes;
+  const populates = ['dishes', 'favoriteDishes', 'eventsHosting', 'eventsAttending', 'connections'];
+  const user = await fetchUserWithPopulates(req.user.id, populates);
+  const favoriteDishes = await fetchFavoriteDishes(user);
+  const friendsDishes = await fetchFriendsDishes(user);
   res.render('layout', { 
-    userDishes,
+    user,
+    userDishes: user.dishes,
     favoriteDishes,
+    friendsDishes,
     cssFile,
     title: 'Profile',
     view: 'account/viewProfile'
@@ -125,7 +109,7 @@ exports.addFavorite = async (req, res) => {
 
 exports.removeFavorite = async (req, res) => {
   try {
-    const user = await User.findById(req.user._id);
+    const user = await User.findById(req.user._id, { favoriteDishes: 1 });
     user.favoriteDishes = user.favoriteDishes.filter(id => id != req.body.dishId);
     await user.save();
     res.redirect('/dishes/' + req.body.dishId);

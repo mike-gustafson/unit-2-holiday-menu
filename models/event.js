@@ -56,7 +56,6 @@ const eventSchema = new mongoose.Schema({
             ? this.guests.map(guest => guest.name).join(', ') : 'No Guests';
     });
     
-
     eventSchema.virtual('guestCount').get(function() {
         return this.guests.length;
     });

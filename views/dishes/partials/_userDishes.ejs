@@ -18,7 +18,8 @@
 <ul>
   <% friendsDishes.forEach(function(dish) { %>
   <li>
-    <a href="/dishes/<%= dish.id %>"><%= dish.name %></a> <a href="/users/<%= dish.user._id %>" class="right dish-user-name">from <%= dish.user.fullName %></a>
+    <a href="/dishes/<%= dish.id %>"><%= dish.name %></a> 
+    <a href="/users/<%= dish.user._id %>" class="right dish-user-name">by <%= dish.user.fullName %></a>
   </li>
   <% }) %>
 </ul>
@@ -30,7 +31,8 @@
 <ul>
   <% favoriteDishes.forEach(function(dish) { %>
   <li>
-    <a href="/dishes/<%= dish.id %>"><%= dish.name %></a>
+    <a href="/dishes/<%= dish.id %>"><%= dish.name %></a> 
+    <a href="/users/<%= dish.user._id %>" class="right dish-user-name">by <%= dish.user.fullName %></a>
   </li>
   <% }) %>
 </ul>

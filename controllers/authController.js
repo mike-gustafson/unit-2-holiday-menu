@@ -3,7 +3,7 @@ const crypto = require('crypto');
 const path = require('path');
 const bcrypt = require('bcrypt');
 const passport = require('passport');
-const nodemailer = require('nodemailer');
+
 const User = require('../models/user');
 
 const resetPasswordEmail = fs.readFileSync(
@@ -11,16 +11,7 @@ const resetPasswordEmail = fs.readFileSync(
   'utf8'
 );
 
-async function sendEmail(mailOptions) {
-  const transporter = nodemailer.createTransport({
-    service: 'Gmail',
-    auth: {
-      user: process.env.EMAIL_USER,
-      pass: process.env.EMAIL_PASS,
-    },
-  });
-  return transporter.sendMail(mailOptions);
-}
+const sendEmail = require('../utils/middleware/sendEmail');
 
 exports.signupForm = (req, res) => {
   res.render('layout', {

@@ -1,30 +1,33 @@
 const Dish = require('../models/dish');
 const User = require('../models/user');
 
-const categories = require('../utils/data/dishCategoryOptions');
+const cssFile = 'dishes.css';
+
 const diets = require('../utils/data/diets');
+const categories = require('../utils/data/dishCategoryOptions');
 
-
+const fetchOtherDishes = require('../utils/middleware/fetchOtherDishes');
+const fetchFriendsDishes = require('../utils/middleware/fetchFriendsDishes');
+const fetchUserWithPopulates = require('../utils/middleware/fetchUserWithPopulates');
+const fetchFavoriteDishes = require('../utils/middleware/fetchFavoriteDishes');
 
 exports.getDishes = async (req, res) => {
     try {
-        if (req.user) {
-            const user = await User.findById(req.user.id);
-            const userDishes = await Dish.find({ user: user._id });
-            const favoriteDishes = await Dish.find({ _id: { $in: user.favoriteDishes } });
-            const otherDishes = await Dish.find({ _id: { $nin: user.favoriteDishes.concat(user.dishes) } });
-            res.render('layout', { 
-                dishes: [], 
-                userDishes, 
-                favoriteDishes,
-                otherDishes,
-                title: 'Dishes',
-                cssFile: 'dishes.css',
-                view: 'dishes/index'});
-        } else {
-            return res.render('dishes/index', { dishes, userDishes: [], otherDishes: [] });
-        }
+        const dataToPopulate = ['dishes', 'favoriteDishes', 'eventsHosting', 'eventsAttending', 'connections'];
+        const user = await fetchUserWithPopulates(req.user.id, dataToPopulate);
+        const favoriteDishes = await fetchFavoriteDishes(user);
+        const friendsDishes = await fetchFriendsDishes(user);
+        const otherDishes = await fetchOtherDishes(user);
+        res.render('layout', {
+            userDishes: user.dishes, 
+            favoriteDishes,
+            otherDishes,
+            friendsDishes,
+            title: 'Dishes',
+            cssFile,
+            view: 'dishes/index'});
     } catch (err) {
+        console.error('Error getting dishes:', err);
         res.status(500).send('Error getting dishes.');
     }
 };
@@ -40,7 +43,7 @@ exports.showDish = async (req, res) => {
             isFavorite, 
             dishCreatorName,
             title: dish.name,
-            cssFile: 'dishes.css',
+            cssFile,
             view: 'dishes/show'
         });
     } catch (err) {
@@ -53,16 +56,13 @@ exports.newDishForm = (req, res) => {
         categories, 
         diets,
         title: 'New Dish',
-        cssFile: 'dishes.css',
+        cssFile,
         view: 'dishes/new' 
     });
 };
 
 exports.createDish = async (req, res) => {
     try {
-        if (!req.user) {
-            return res.status(401).send('Unauthorized. User not logged in.');
-        }
         const newDish = {
             name: req.body.name.trim(),
             servings: parseInt(req.body.servings),
@@ -82,17 +82,12 @@ exports.createDish = async (req, res) => {
             return res.status(400).send('An identical dish already exists.');
         }
         await dish.save();
-
         const user = await User.findById(req.user._id);
         user.dishes.push(dish._id);
         await user.save();
-
         res.redirect('/account');
     } catch (err) {
         console.error('Error creating dish:', err);
-        if (err.name === 'ValidationError') {
-            return res.status(400).send('Validation Error: ' + err.message);
-        }
         res.status(500).send('Error creating dish. Please try again later.');
     }
 };
@@ -107,7 +102,7 @@ exports.editDishForm = async (req, res) => {
             categories, 
             diets,
             title: 'Edit Dish',
-            cssFile: 'dishes.css',
+            cssFile,
             view: 'dishes/edit'
         });
     }

@@ -1,14 +1,22 @@
 E-Mail: <%= user.email %>
 <br>
 Your Diet: 
-<% user.diet.forEach(diet => { %>
+<% if (user.diet.length > 0) { %>
+  <% user.diet.forEach(diet => { %>
     <span><%= diet %></span>    
-<% }) %>
+  <% }) %>
+<% } else { %>
+    <span>No diet specified</span>
+<% } %>
 <br>
 Your Connections:
-<% user.connections.forEach(connection => { %>
-    <span><%= connection.fullName %></span>
-<% }) %>
+<% if (user.connections.length > 0) { %>
+  <% user.connections.forEach(connection => { %>
+    <span><%= connection.firstName %></span>
+  <% }) %>
+<% } else { %>
+    <span>No connections yet</span>
+<% } %>
 <br>
 Your Past Events:
 <% user.eventsAttending.forEach(event => { %>
