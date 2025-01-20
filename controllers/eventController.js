@@ -2,11 +2,12 @@ const Event = require('../models/event');
 const User = require('../models/user');
 const Dish = require('../models/dish');
 
+const fetchUserWithPopulates = require('../utils/middleware/fetchUserWithPopulates');
+
 exports.getEvents = async (req, res) => {
     try {
-        const user = await User.findById(req.user.id)
-            .populate('eventsHosting')
-            .populate('eventsAttending')
+        const dataToPopulate = ['eventsHosting', 'eventsAttending'];
+        const user = await fetchUserWithPopulates(req.user.id, dataToPopulate);
         res.render('layout', { 
             events: user.allEvents,
             title: 'Events',
@@ -22,24 +23,6 @@ exports.newEventForm = (req, res) => {
         title: 'New Event', 
         cssFile: 'events.css', 
         view: 'events/new' });
-};
-
-exports.createEvent = async (req, res) => {
-    try {
-        const newEvent = req.body;
-        newEvent.date = new Date(`${newEvent.date}T${newEvent.time}`);
-        const event = new Event(newEvent);
-        event.user = req.user.id;
-        event.guests.push(req.user.id);
-        const user = await User.findById(req.user.id);
-        user.eventsHosting.push(event._id);
-        user.eventsAttending.push(event._id);
-        await user.save();
-        await event.save();
-        res.redirect('/events');
-    } catch (err) {
-        res.status(500).send('Error creating event.');
-    }
 };
 
 exports.createEvent = async (req, res) => {
@@ -86,9 +69,7 @@ exports.createEvent = async (req, res) => {
 exports.showEvent = async (req, res) => {
     try {
         const event = await Event.findById(req.params.id)
-        if (!event) {
-            return res.status(404).send('Event not found.');
-        }
+        if (!event) { res.redirect('/events') }
         const isInvited = event.guests.some(guest => {
             return guest.userId.id.toString() === req.user.id;
         });
@@ -99,22 +80,39 @@ exports.showEvent = async (req, res) => {
                 return guest.userId.id.toString() === req.user._id.toString();
         });
         if (userEventDetails.dish === null) {
+            console.log('no dish')
             userEventDetails.dish = { name: 'No dish selected' };
         }
-        const user =  await User.findById(req.user.id)
-            .populate('favoriteDishes')
-            .populate('dishes');
+        const dataToPopulate = ['dishes', 'favoriteDishes', 'connections'];
+        const user = await fetchUserWithPopulates(req.user.id, dataToPopulate);
         let dishes = Array.from(
             new Map(
                 [...user.dishes, ...user.favoriteDishes].map(dish => [dish._id.toString(), dish])
             ).values()
         );
         dishes = await Dish.populate(dishes, { path: 'user', select: '_id firstName lastName' });
-        console.log(dishes);
+        
+        let invitableUsers = []
+        const isUsersEvent = (event, userId) => {
+            const isTrue = (event.host.id.toString() === userId);
+            if (isTrue) { 
+                invitableUsers = user.connections;
+                invitableUsers = invitableUsers.filter(user => {
+                    return !event.guests.some(guest => guest.userId.id.toString() === user.id);
+                })
+                return 'partials/_inviteUsers'; }
+            return '../partials/_blank';
+        }
+        const rightSidebar = isUsersEvent(event, req.user.id);
+        
+        console.log(invitableUsers)
         res.render('layout', {
             event,
             userEventDetails,
+            invitableUsers,
+            user,
             dishes,
+            rightSidebar,
             title: event.name,
             cssFile: 'events.css',
             view: 'events/show'
@@ -123,18 +121,6 @@ exports.showEvent = async (req, res) => {
         console.error('Error showing event:', err);
         res.status(500).send('Error showing event.');
     }
-};
-
-exports.inviteToEvent = async (req, res) => {
-    const event = await Event.findById(req.params.id);
-    const user = await User.find();
-    res.render('layout', { 
-        event, 
-        contacts: user.connections,
-        title: 'Invite to Event',
-        cssFile: 'events.css',
-        view: 'events/invite'
-    });
 };
 
 exports.editEventForm = async (req, res) => {
@@ -188,5 +174,58 @@ exports.rsvp = async (req, res) => {
         res.redirect('/events/' + req.params.id);
     } catch (err) {
         res.status(500).send('Error updating RSVP.');
+    }
+}
+
+exports.inviteUser = async (req, res) => {
+    try {
+        const event = await Event.findById(req.params.eventId);
+        const user = await User.findById(req.params.userId);
+        if (!event || !user) {
+            return res.status(404).send('Event or user not found.');
+        }
+        const isInvited = event.guests.some(guest => {
+            return guest.userId.id.toString() === user.id;
+        });
+        if (isInvited) {
+            return res.status(400).send('User already invited.');
+        }
+        event.guests.push({
+            userId: user.id,
+            name: user.fullName,
+            status: 'Invited',
+        });
+        await event.save();
+        user.eventsAttending.push(event._id);
+        await user.save();
+        res.redirect('/events/' + req.params.eventId);
+    }
+    catch (err) {
+        res.status(500).send('Error inviting user.');
+    }
+}
+
+exports.uninviteUser = async (req, res) => {
+    try {
+        const event = await Event.findById(req.params.eventId);
+        console.log(event)
+        console.log(req.params.userId)
+        const user = await User.findById(req.params.userId);
+        console.log(user)
+        if (!event || !user) {
+            return res.status(404).send('Event or user not found.');
+        }
+        event.guests = event.guests.filter(guest => {
+            return guest.userId.id.toString() !== user.id;
+        });
+        await event.save();
+        user.eventsAttending = user.eventsAttending.filter(eventId => {
+            return eventId.toString() !== event.id;
+        });
+        await user.save();
+        res.redirect('/events/' + req.params.eventId);
+    }
+    catch (err) {
+        res.status(500).send('Error uninviting user.');
     }
 }

@@ -64,7 +64,7 @@ exports.newDishForm = (req, res) => {
 exports.createDish = async (req, res) => {
     try {
         const newDish = {
-            name: req.body.name.trim(),
+            name: `Copy of ${req.body.name.trim()}`,
             servings: parseInt(req.body.servings),
             diets: req.body.diets || [],
             category: req.body.category.trim().toLowerCase() || 'other',

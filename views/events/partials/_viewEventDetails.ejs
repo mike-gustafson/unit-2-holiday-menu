@@ -52,7 +52,7 @@
           <select name="dish">
               <option value="" disabled selected>Choose your dish</option>
               <% dishes.forEach(function(dish) { %>
-                  <option value="<%= dish._id %>" <%= userEventDetails.dish._id.toString() === dish._id.toString() ? 'selected' : '' %>><%= dish.name %></option>
+                  <option value="<%= dish.id %>" <%= userEventDetails.dish._id.toString() === dish.id.toString() ? 'selected' : '' %>><%= dish.name %></option>
               <% }) %>
 
           </select>
@@ -71,15 +71,14 @@
   </ul>
   </div>
   <div class="col s10">
-    <ul>
       <% event.guests.forEach(function(guest) { %>
-        <% if (user.fullName !== guest.name) { %>
-          <% if (guest.status === 'Attending') { %>
-            <li><%= guest.name %> - <%= guest.dish?.name || 'No Dish Selected' %></li> 
-          <% } %>          
-        <% } %>
+          <% if (guest.status === 'Attending' || guest.status === 'Maybe') { %>
+            <form action="/events/<%= event.id %>/remove/<%= guest.userId.id %>?_method=PUT" method="POST">
+              <span><%= guest.name %> - <%= guest.dish?.name || 'No Dish Selected' %></span>                      
+              <button type="submit" class="btn-floating btn-small waves-effect waves-red"><i class="material-icons left">person_remove</i></button>
+            </form>
+          <% } %>
       <% }) %>
-    </ul>
   </div>
 </div>
 <hr>
@@ -90,13 +89,15 @@
     </ul>
   </div>
   <div class="col s10">
-    <ul>
       <% event.guests.forEach(function(guest) { %>
         <% if (guest.status !== 'Attending') { %>
-          <li><%= guest.name %></li>
+          
+          <form action="/events/<%= event.id %>/remove/<%= guest.userId.id %>?_method=PUT" method="POST">
+            <span><%= guest.name %></span>
+            <button type="submit" class="btn-floating btn-small waves-effect waves-red"><i class="material-icons left">person_remove</i></button>
+          </form>
         <% } %>
       <% }) %>
-    </ul>
   </div>
 </div>
 

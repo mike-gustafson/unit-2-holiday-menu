@@ -6,7 +6,7 @@ const fetchAllEvents = async (user) => {
     const events = user.allEvents;
     for (const event of events) {
         event.host = await User.findById(event.host);
-        event.host = event.host.fullName;
+        event.guests = await User.find({ _id: { $in: event.guests } });
     };
     return events;
 };

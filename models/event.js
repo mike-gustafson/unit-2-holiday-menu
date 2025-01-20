@@ -16,7 +16,7 @@ const eventSchema = new mongoose.Schema({
     guests: [{ 
         userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User' }, 
         name: { type: String },
-        dish: { type: mongoose.Schema.Types.ObjectId, ref: 'Dish' },
+        dish: { type: mongoose.Schema.Types.ObjectId, ref: 'Dish', default: null },
         status: { type: String, enum: ['Attending', 'Not Attending', 'Maybe', 'Invited'], default: 'Invited' },
     }],
     host: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },

@@ -14,7 +14,6 @@ exports.main = async (req, res) => {
             mutualFriendsCount: mutualFriends.length,
           };
         });
-        console.log(usersWithMutuals);
         res.render('layout', { 
             title: 'Users',
             users: usersWithMutuals,

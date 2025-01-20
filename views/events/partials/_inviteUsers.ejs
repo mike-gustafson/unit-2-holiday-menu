@@ -1,0 +1,10 @@
+<div class="height-full">
+  <% invitableUsers.forEach(person => { %>
+      <form action="/events/<%= event.id %>/add/<%= person.id %>?_method=PUT" method="POST">
+        <button type="submit" class="btn-floating btn-small waves-effect waves-green">
+          <i class="material-icons left">person_add</i>
+        </button>
+        <span><%- person.fullName %></span>
+      </form>
+    <% }) %>
+</div>
